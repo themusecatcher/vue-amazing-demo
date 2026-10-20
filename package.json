@@ -7,6 +7,7 @@
   "description": "vue-amazing-ui 第三方使用验证站：逐组件核验功能、样式、按需引入与主题联动",
   "scripts": {
     "dev": "vite",
+    "push": "sh scripts/push.sh",
     "build": "vite build",
     "preview": "vite build && vite preview",
     "type-check": "vue-tsc --build --force",
