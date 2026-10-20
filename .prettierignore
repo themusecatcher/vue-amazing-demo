@@ -1,0 +1,12 @@
+# 构建产物
+dist/
+
+# 依赖目录
+node_modules/
+
+# 锁文件：由 pnpm 生成，格式化会重排其结构，禁止纳入
+pnpm-lock.yaml
+
+# unplugin 自动生成的类型声明文件：随源码增删而变，不参与格式化
+auto-imports.d.ts
+components.d.ts

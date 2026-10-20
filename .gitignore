@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 构建产物 / 依赖
+dist
+node_modules
+coverage
+*.local
+.DS_Store
+
+# 编辑器
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 注意：auto-imports.d.ts / components.d.ts 由 unplugin 生成，但必须纳入版本控制：
+# 源码依赖其全局声明（如 stores/theme.ts 的 defineStore/ref、模板内库组件的 props 类型），
+# 不入库会导致全新克隆执行 pnpm type-check 直接报 TS2304/TS2552。
+*.tsbuildinfo

@@ -1,0 +1,14 @@
+// Node 环境配置（构建工具链配置文件）
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": ["vite.config.*", "eslint.config.*"],
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"]
+  }
+}

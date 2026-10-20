@@ -1,0 +1,62 @@
+{
+  "name": "vue-amazing-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "author": "theMuseCatcher",
+  "description": "vue-amazing-ui 第三方使用验证站：逐组件核验功能、样式、按需引入与主题联动",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite build && vite preview",
+    "type-check": "vue-tsc --build --force",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
+    "check": "pnpm lint:check && pnpm format:check && pnpm type-check"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@vueuse/core": "^14.0.0",
+    "date-fns": "^4.1.0",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.44",
+    "vue-amazing-ui": "^2.15.2",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.5",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-vue": "^10.5.1",
+    "less": "^4.4.2",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "unplugin-auto-import": "^20.2.0",
+    "unplugin-vue-components": "^30.0.0",
+    "vite": "^8.2.1",
+    "vue-tsc": "^3.1.4"
+  },
+  "keywords": [
+    "Vue3",
+    "TypeScript",
+    "Vite",
+    "Less",
+    "VueAmazingUI"
+  ],
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0",
+    "pnpm": ">=11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
