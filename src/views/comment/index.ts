@@ -1,3 +1,1 @@
-export default {
-  title: '评论'
-}
+export default { title: '评论' }

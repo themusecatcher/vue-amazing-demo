@@ -1,3 +1,3 @@
 export default {
-  title: '悬浮按钮'
+  title: '浮动按钮'
 }

@@ -1,3 +1,3 @@
 export default {
-  title: '搜索输入框'
+  title: '搜索框'
 }

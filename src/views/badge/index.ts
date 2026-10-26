@@ -1,3 +1,3 @@
 export default {
-  title: '徽标数'
+  title: '徽标'
 }

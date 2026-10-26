@@ -1,3 +1,3 @@
 export default {
-  title: '气泡确认'
+  title: '弹出确认'
 }

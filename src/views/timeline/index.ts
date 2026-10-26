@@ -1,3 +1,3 @@
 export default {
-  title: '时间线'
+  title: '时间轴'
 }

@@ -1,3 +1,3 @@
 export default {
-  title: '滑动输入'
+  title: '滑动输入条'
 }

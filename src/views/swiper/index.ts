@@ -1,3 +1,3 @@
 export default {
-  title: '幻灯片'
+  title: '触摸滑动'
 }

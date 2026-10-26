@@ -1,3 +1,3 @@
 export default {
-  title: '视频'
+  title: '播放器'
 }

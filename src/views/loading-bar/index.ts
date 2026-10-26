@@ -1,3 +1,3 @@
 export default {
-  title: '加载进度条'
+  title: '加载条'
 }

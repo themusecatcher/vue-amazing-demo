@@ -1,3 +1,3 @@
 export default {
-  title: '数字动画'
+  title: '数值动画'
 }
