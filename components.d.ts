@@ -101,6 +101,7 @@ declare module 'vue' {
     Textarea: typeof import('vue-amazing-ui')['Textarea']
     TextScroll: typeof import('vue-amazing-ui')['TextScroll']
     Timeline: typeof import('vue-amazing-ui')['Timeline']
+    TimelineItem: typeof import('vue-amazing-ui')['TimelineItem']
     TimePicker: typeof import('vue-amazing-ui')['TimePicker']
     Tooltip: typeof import('vue-amazing-ui')['Tooltip']
     Upload: typeof import('vue-amazing-ui')['Upload']

@@ -20,12 +20,15 @@ importers:
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.44(typescript@5.9.3))
+      spark-md5:
+        specifier: ^3.0.2
+        version: 3.0.2
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@5.9.3)
       vue-amazing-ui:
-        specifier: ^2.15.2
-        version: 2.15.2(vue@3.5.44(typescript@5.9.3))
+        specifier: ^3.3.1
+        version: 3.3.1(vue@3.5.44(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.44(typescript@5.9.3))
@@ -36,6 +39,9 @@ importers:
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
+      '@types/spark-md5':
+        specifier: ^3.0.5
+        version: 3.0.5
       '@vitejs/plugin-vue':
         specifier: ^6.0.8
         version: 6.0.8(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.6.1)(less@4.4.2)(sass-embedded@1.95.1)(sass@1.95.1)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.44(typescript@5.9.3))
@@ -737,6 +743,9 @@ packages:
 
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+
+  '@types/spark-md5@3.0.5':
+    resolution: {integrity: sha512-lWf05dnD42DLVKQJZrDHtWFidcLrHuip01CtnC2/S6AMhX4t9ZlEUj4iuRlAnts0PQk7KESOqKxeGE/b6sIPGg==}
 
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
@@ -1791,6 +1800,9 @@ packages:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
 
+  spark-md5@3.0.2:
+    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
+
   speakingurl@14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
@@ -1975,8 +1987,8 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
-  vue-amazing-ui@2.15.2:
-    resolution: {integrity: sha512-dq38ZScGWxBv4ZBdkKU4aFMQZGmM2PuzwsGIVpFdyP/REcC1kFWu0wrucJhQzv9AGZfrPamFDeZU71MeY5zCRA==}
+  vue-amazing-ui@3.3.1:
+    resolution: {integrity: sha512-p021VQ/QgNJ8rJq8PEA+01QqXIVWEJ2Rnp3hb4JJYbRdrOeZycA6YgFvpsPyf+69INDTfBa3TbCFQYzEGU/FLQ==}
     engines: {node: ^20.19.0 || >=22.12.0, pnpm: '>=11'}
     peerDependencies:
       vue: ^3.4.0
@@ -2452,6 +2464,8 @@ snapshots:
   '@types/node@24.10.1':
     dependencies:
       undici-types: 7.16.0
+
+  '@types/spark-md5@3.0.5': {}
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -3508,7 +3522,7 @@ snapshots:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.1.4
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
     optionalDependencies:
       '@parcel/watcher': 2.5.1
     optional: true
@@ -3545,6 +3559,8 @@ snapshots:
 
   source-map@0.6.1:
     optional: true
+
+  spark-md5@3.0.2: {}
 
   speakingurl@14.0.1: {}
 
@@ -3724,7 +3740,7 @@ snapshots:
 
   vscode-uri@3.1.0: {}
 
-  vue-amazing-ui@2.15.2(vue@3.5.44(typescript@5.9.3)):
+  vue-amazing-ui@3.3.1(vue@3.5.44(typescript@5.9.3)):
     dependencies:
       '@ant-design/colors': 8.0.1
       '@ctrl/tinycolor': 4.2.0
