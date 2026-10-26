@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { BgColorsOutlined } from '@ant-design/icons-vue'
+import { Scrollbar } from 'vue-amazing-ui'
+// 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
+import 'vue-amazing-ui/es/scrollbar/style'
 import type { ItemType, MenuKey } from 'vue-amazing-ui'
 import pkg from 'vue-amazing-ui/package.json'
-import { useThemeStore } from '@/stores/theme'
+import ThemeColorButton from './components/ThemeColorButton.vue'
+import ThemeModeButton from './components/ThemeModeButton.vue'
 import { demoComponentCount, demoGroups } from '@/views/config'
 import '@/views/demo.global.less'
 
 const route = useRoute()
 const router = useRouter()
-
-// 全局主题色：右下角 FloatButton 弹出的 ColorPicker 修改后经 App.vue 的 ConfigProvider 实时生效
-const themeStore = useThemeStore()
-
-// 主题色面板显示状态：由 FloatButton 的 Popover 受控管理
-const themePanelOpen = ref(false)
 
 const basePath = ''
 
@@ -46,24 +43,34 @@ function onSelect(info: { key: MenuKey }) {
   }
 }
 
-/** BackTop 排除项：这两个演示页自身展示对应组件，避免同页出现两个实例（对齐官方演示工程） */
-const hideBackTop = computed(() => ['BackTop', 'ConfigProvider'].includes(String(route.name)))
-
 /**
- * BackTop 滚动监听目标：内容区滚动容器（Scrollbar 内部的 .scrollbar-container）
- * BackTop 经 Teleport 挂载到 body，默认沿 DOM 向上只能找到 documentElement，
- * 而本布局为容器内滚动、页面自身不滚动，不显式指定时按钮永远不会显示
+ * 少数演示页需要验证「随文档滚动」的行为（水印页的全屏水印 fixed 差异）：
+ * 由 index.ts 的 windowScroll 声明，此时不套 Scrollbar，滚动交回文档，侧栏吸附视口顶部
  */
-const getContentScrollTarget = (): HTMLElement | Document =>
-  document.querySelector<HTMLElement>('.demo-content-scroll .scrollbar-container') ?? document.documentElement
+const windowScroll = computed<boolean>(() => route.meta.windowScroll === true)
+/** 内容滚动容器：整页滚动页退化为普通 div，避免两套滚动并存 */
+const contentWrapper = computed(() => (windowScroll.value ? 'div' : Scrollbar))
+const contentScrollRef = ref<InstanceType<typeof Scrollbar> | null>(null)
+/** 内容区滚动由 Scrollbar 承载（路由的 scrollBehavior 只作用于 window，管不到它），故路由变化后手动复位 */
+watch(
+  () => route.fullPath,
+  () => {
+    contentScrollRef.value?.scrollTo({ top: 0 })
+  },
+  { flush: 'post' }
+)
+
+/** 外壳自带 BackTop 的排除项由各演示页的 index.ts 声明（backTop: false），与官方演示工程一致 */
+const hideBackTop = computed(() => route.meta.backTop === false)
 </script>
 
 <template>
-  <Row class="demo-row">
-    <Col class="demo-menu-col" :xs="5" :xl="4">
+  <Row class="demo-row" :class="{ 'demo-row-window': windowScroll }">
+    <Col class="demo-menu-col" :class="{ 'demo-menu-col-window': windowScroll }" :xs="5" :xl="4">
       <div class="demo-menu-header">
         <div class="demo-menu-title-row">
-          <span class="demo-menu-title">Vue Amazing UI</span>
+          <!-- 标题即首页入口：菜单里没有首页项，靠这里回到总览页 -->
+          <RouterLink class="demo-menu-title" to="/" title="返回组件总览">Vue Amazing UI</RouterLink>
           <Tag class="demo-menu-version" size="small" color="volcano" :bordered="false">v{{ pkg.version }}</Tag>
         </div>
         <span class="demo-menu-count">共 {{ demoComponentCount }} 个组件</span>
@@ -80,7 +87,7 @@ const getContentScrollTarget = (): HTMLElement | Document =>
       </Scrollbar>
     </Col>
     <Col class="demo-content-col" :xs="19" :xl="20">
-      <Scrollbar class="demo-content-scroll">
+      <component :is="contentWrapper" ref="contentScrollRef" class="demo-content-scroll">
         <div class="router-view">
           <RouterView v-slot="{ Component }">
             <Transition name="fade" mode="out-in">
@@ -109,35 +116,34 @@ const getContentScrollTarget = (): HTMLElement | Document =>
               </div>
             </Transition>
           </RouterView>
-          <!-- BackTop 上移至主题色按钮之上（bottom: 96），避免与常驻主题色 FloatButton 重叠 -->
-          <BackTop v-if="!hideBackTop" :listen-to="getContentScrollTarget" :bottom="96" />
+          <!-- 与官方演示工程一致：暗黑模式浮钮（bottom: 160）在最上、主题色浮钮（bottom: 100）居中、
+               BackTop（默认 bottom: 40）在下；三者都靠固定定位落在右下角，因此放在滚动内容内即可
+               （BackTop 会自动监听最近的可滚动祖先） -->
+          <ThemeModeButton />
+          <ThemeColorButton />
+          <BackTop v-if="!hideBackTop" />
         </div>
-      </Scrollbar>
+      </component>
     </Col>
   </Row>
-  <!-- 主题色设置：常驻悬浮于页面右下角，点击 FloatButton 弹出 ColorPicker 面板，全站组件配色实时联动 -->
-  <Popover
-    v-model:open="themePanelOpen"
-    trigger="click"
-    placement="top"
-    title="主题色"
-    :arrow="false"
-    :offset="[0, -8]"
-  >
-    <template #content>
-      <ColorPicker :width="220" v-model:value="themeStore.primaryColor" />
-    </template>
-    <FloatButton type="primary" tooltip="主题色设置">
-      <template #icon>
-        <BgColorsOutlined />
-      </template>
-    </FloatButton>
-  </Popover>
 </template>
 
 <style lang="less" scoped>
 // 整行撑满视口高度，作为两列高度的唯一声明源（Row 为 wrap 容器，交叉轴 stretch 无法压低列高，故列高以 100% 派生）
 .demo-row {
+  height: 100vh;
+  // 整页滚动页：高度交由内容撑开，侧栏改为吸附视口（见 .demo-menu-col-window）
+  &-window {
+    height: auto;
+    align-items: flex-start;
+  }
+}
+
+// 整页滚动页的侧栏：吸附视口顶部并撑满一屏，内容随文档滚动
+.demo-menu-col-window {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
   height: 100vh;
 }
 
@@ -146,7 +152,7 @@ const getContentScrollTarget = (): HTMLElement | Document =>
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid var(--va-border-color);
 }
 
 .demo-menu-header {
@@ -155,7 +161,7 @@ const getContentScrollTarget = (): HTMLElement | Document =>
   flex-direction: column;
   gap: 4px;
   padding: 16px 16px 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--va-border-color);
 }
 
 // 标题行：组件库名（渐变）+ 版本标签；flex-start 顶对齐，标签不做垂直居中
@@ -178,12 +184,20 @@ const getContentScrollTarget = (): HTMLElement | Document =>
   background-image: var(--demo-title-gradient);
   -webkit-background-clip: text;
   background-clip: text;
+  // 同时是回首页的链接（RouterLink → a），这里压掉全局链接色，保留渐变文字
   color: transparent;
+  text-decoration: none;
+  // 悬停 / 键盘聚焦时给出「可点击」的反馈
+  transition: opacity 0.2s;
+  &:hover,
+  &:focus-visible {
+    opacity: 0.75;
+  }
 }
 
 .demo-menu-count {
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--va-text-color-3);
 }
 
 // 菜单滚动区：占满剩余高度，交由 Scrollbar 组件接管滚动

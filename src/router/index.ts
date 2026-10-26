@@ -9,6 +9,8 @@ const APP_TITLE = 'Vue Amazing Demo'
   name 转 PascalCase（短横线分段各自首字母大写）：Button、ConfigProvider
 */
 const demoComponents = import.meta.glob('../views/*/Index.vue')
+// 缩写词片段：整体大写，使路由 name 与组件对外名一致（qr-code → QRCode）
+const ACRONYMS = new Set(['qr'])
 const demoMetas = import.meta.glob('../views/*/index.ts', {
   eager: true, // 直接引入模块
   import: 'default' // 加载默认导出
@@ -26,7 +28,8 @@ const demoRoutes: RouteRecordRaw[] = Object.entries(demoMetas).map(([path, meta]
       word
         .split('-')
         .filter(Boolean)
-        .map((part) => `${part[0]?.toUpperCase() ?? ''}${part.slice(1)}`)
+        // 缩写片段整体大写，使路由 name 与组件对外名一致（qr-code → QRCode，与官方演示工程口径相同）
+        .map((part) => (ACRONYMS.has(part) ? part.toUpperCase() : `${part[0]?.toUpperCase() ?? ''}${part.slice(1)}`))
         .join('')
     )
     .join('')

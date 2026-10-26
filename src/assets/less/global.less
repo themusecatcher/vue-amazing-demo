@@ -1,7 +1,5 @@
 // 全局样式文件 (less 和 sass 视具体情况二选一使用即可)
 
-@theme-color: #1677ff;
-
 *,
 *::before,
 *::after {
@@ -9,32 +7,29 @@
   margin: 0;
   padding: 0;
 }
+// 页面底色与常规文本色跟随组件库主题变量：ConfigProvider 只写 <html> 上的 CSS 变量与 data-va-mode，
+// 不会绘制页面本身，这里必须同步消费，否则暗色下会出现「组件已变暗、页面仍白底白字」
+html,
+body {
+  background: var(--va-bg-container-color, #fff);
+}
 body {
   min-height: 100vh;
-  background: #fff;
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--va-text-color-1, rgba(0, 0, 0, 0.88));
+  // 与官方演示工程同一套字体口径：不声明站点不加载的 webfont，避免「声明了却永远落不到」的失真
   font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
 }
 a {
-  color: @theme-color;
+  // 链接色同理走主题变量，暗色下取组件库的暗色链接色，而非固定亮色蓝
+  color: var(--va-link-color, #1677ff);
   text-decoration: none;
   background-color: transparent;
   outline: none;
   cursor: pointer;
   &:hover {
-    color: #4096ff;
+    color: var(--va-link-color-hover, #4096ff);
   }
 }
 img {
