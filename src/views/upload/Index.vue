@@ -91,24 +91,7 @@ function onCustomRequest(file: File): Promise<UploadFileType> {
     }, 1000)
   })
 }
-// 自定义分片上传：按固定大小切分文件并模拟逐片上传（原演示依赖 worker + spark-md5，此处内联简化，避免引入额外文件与依赖）
-const CHUNK_SIZE = 1024 * 1024 * 5 // 5MB 分片大小
-function sliceFile(file: File): Promise<Blob[]> {
-  return new Promise((resolve, reject) => {
-    const chunks: Blob[] = []
-    const chunkCount = Math.ceil(file.size / CHUNK_SIZE)
-    for (let i = 0; i < chunkCount; i++) {
-      const start = i * CHUNK_SIZE
-      const end = Math.min(file.size, start + CHUNK_SIZE)
-      chunks.push(file.slice(start, end))
-    }
-    if (chunks.length) {
-      resolve(chunks)
-    } else {
-      reject(new Error('slice file fail ...'))
-    }
-  })
-}
+import { sliceFile } from './sliceFile'
 function onCustomSliceUpload(file: File): Promise<UploadFileType> {
   return new Promise((resolve, reject) => {
     console.time('sliceFile')
