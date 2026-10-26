@@ -15,7 +15,7 @@ import type {
   NotificationUpdate,
   SelectOption
 } from 'vue-amazing-ui'
-// 以下组件在渲染函数（h）中作编程式引用，需要组件值：web-vue 未做全局注册，故显式按需引入
+// 以下组件在渲染函数（h）中作编程式引用，需要组件值：本项目未做全局注册，故显式按需引入
 // setup 内调用 useNotification()：需外层存在 <NotificationProvider>（本项目已在 App.vue 入口全局包裹）
 const notification = useNotification()
 // setup 内调用 useMessage()：需外层存在 <MessageProvider>（本项目已在 App.vue 入口全局包裹）
@@ -220,7 +220,8 @@ I cant get no, I cant get no`,
       h(
         'a',
         {
-          style: 'color: var(--notification-primary-color); cursor: pointer; font-weight: 500; user-select: none',
+          style:
+            'color: var(--va-cp-notification-primary-color, var(--va-primary-color)); cursor: pointer; font-weight: 500; user-select: none',
           onClick: () => {
             markAsRead = true
             handle.destroy()
@@ -461,7 +462,7 @@ function onToNotification() {
     <h2 class="mt30 mb10">与浮层叠加</h2>
     <p class="mb10">
       通知的默认层级为 <code>1040</code>：高于承载层（<code>Modal</code> 弹窗 <code>1010</code>），低于锚点跟随型浮层
-      （<code>Select</code> 面板 <code>1050</code> / <code>Tooltip</code>
+      （<code>Select</code> 面板 <code>1050</code> / <code>Tooltip</code> 气泡
       <code>1070</code>），因此通知内容里的下拉面板与气泡不会被通知框压住
     </p>
     <Button type="primary" @click="onLayerNotification">通知内容里的浮层</Button>

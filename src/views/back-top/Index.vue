@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { h, ref } from 'vue'
 import { DoubleLeftOutlined, VerticalAlignTopOutlined, ArrowUpOutlined } from '@ant-design/icons-vue'
+const backTopTheme = {
+  components: {
+    BackTop: { primaryColor: '#d4380d' }
+  }
+}
 const defaultCustomStyle = {
   '--back-top-width': '54px',
   '--back-top-height': '54px',
-  '--back-top-icon-size': '32px',
-  '--back-top-default-color-hover': '#d4380d'
+  '--back-top-icon-size': '32px'
 }
 const primaryCustomStyle = {
   '--back-top-width': '54px',
   '--back-top-height': '54px',
   '--back-top-icon-size': '32px',
-  '--back-top-primary-bg-color': '#d4380d',
-  '--back-top-primary-bg-color-hover': '#dd6747',
-  '--back-top-primary-shadow-color': 'rgba(221, 103, 71, 0.36)',
-  '--back-top-primary-shadow-color-hover': 'rgba(221, 103, 71, 0.36)',
   '--back-top-square-border-radius': '18px'
 }
 const primaryDescCustomStyle = {
@@ -22,10 +22,6 @@ const primaryDescCustomStyle = {
   '--back-top-height': '54px',
   '--back-top-icon-with-description-size': '30px',
   '--back-top-description-font-size': '16px',
-  '--back-top-primary-bg-color': '#d4380d',
-  '--back-top-primary-bg-color-hover': '#dd6747',
-  '--back-top-primary-shadow-color': 'rgba(221, 103, 71, 0.36)',
-  '--back-top-primary-shadow-color-hover': 'rgba(221, 103, 71, 0.36)',
   '--back-top-square-border-radius': '18px'
 }
 const scrollContainer = ref<HTMLDivElement>()
@@ -79,16 +75,18 @@ function onShow(show: boolean) {
       :bottom="160"
     />
     <h2 class="mt30 mb10">自定义样式</h2>
-    <BackTop :style="defaultCustomStyle" :right="280" :bottom="160" />
-    <BackTop :style="primaryCustomStyle" type="primary" shape="square" :right="350" :bottom="160" />
-    <BackTop
-      :style="primaryDescCustomStyle"
-      type="primary"
-      shape="square"
-      description="顶部"
-      :right="420"
-      :bottom="160"
-    />
+    <ConfigProvider :theme="backTopTheme">
+      <BackTop :style="defaultCustomStyle" :right="280" :bottom="160" />
+      <BackTop :style="primaryCustomStyle" type="primary" shape="square" :right="350" :bottom="160" />
+      <BackTop
+        :style="primaryDescCustomStyle"
+        type="primary"
+        shape="square"
+        description="顶部"
+        :right="420"
+        :bottom="160"
+      />
+    </ConfigProvider>
     <h2 class="mt30 mb10">自定义可视高度</h2>
     <p class="mb10">自定义滚动时触发显示回到顶部的高度</p>
     <BackTop :bottom="280" :visibility-height="300">
@@ -104,12 +102,12 @@ function onShow(show: boolean) {
     <p class="mb10"> 通过 <code>zIndex</code> 调整按钮层级；按钮上的气泡为浮层（默认 1070），恒在按钮之上 </p>
     <BackTop tooltip="回到顶部" :right="280" />
     <BackTop tooltip="回到顶部" :z-index="3000" :right="340" />
-    <h2 class="mt30 mb10">自定义监听目标</h2>
+    <h2 class="mt30 mb10">监听目标</h2>
     <p class="mb10">自定义设定监听哪个元素来触发 <code>BackTop</code></p>
     <BackTop :listen-to="scrollContainer" :bottom="340" :visibility-height="10">
       <div style="width: 200px; height: 40px; line-height: 40px; text-align: center; font-size: 14px"> 指定目标 </div>
     </BackTop>
-    <div ref="scrollContainer" style="width: 600px; overflow: auto; height: 100px; line-height: 1.57">
+    <div ref="scrollContainer" style="width: 100%; overflow: auto; height: 100px; line-height: 1.57">
       这块应该写一个有意思的笑话。<br />
       这块应该写一个有意思的笑话。<br />
       这块应该写一个有意思的笑话。<br />
@@ -123,7 +121,7 @@ function onShow(show: boolean) {
     </div>
     <br />
     <p class="mb10">自动监听 <code>Scrollbar</code> 来触发 <code>BackTop</code></p>
-    <Scrollbar style="width: 600px; height: 100px">
+    <Scrollbar style="width: 100%; height: 100px">
       <BackTop :bottom="340" :right="260" :visibility-height="10">
         <div style="width: 200px; height: 40px; line-height: 40px; text-align: center; font-size: 14px">
           监听 Scrollbar

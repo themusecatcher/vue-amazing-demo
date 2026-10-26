@@ -583,7 +583,7 @@ const panelZIndexValue = ref('')
   }
 }
 .demo-label {
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--va-text-color-3);
   font-size: 13px;
 }
 </style>

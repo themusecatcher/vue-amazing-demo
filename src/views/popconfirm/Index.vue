@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
-import { useMessage } from 'vue-amazing-ui'
 import { FireFilled, QuestionCircleFilled, SoundFilled } from '@ant-design/icons-vue'
+import { useMessage } from 'vue-amazing-ui'
 const message = useMessage()
 const confirm = (e: MouseEvent) => {
   console.log('confirm', e)

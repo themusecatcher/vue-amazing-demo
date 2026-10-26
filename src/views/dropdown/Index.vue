@@ -352,9 +352,7 @@ function enterLoading2() {
   flex-wrap: wrap;
   gap: 8px;
 }
-/* 类名直接落在本组件模板内的 DownOutlined 根元素上，普通 scoped 选择器即可命中；
-   原先写作 `::deep(...)` 是无效伪元素，会被编译成 `[data-v-x]::deep(...)` 永不匹配（构建期 lightningcss 告警） */
-.btn-tail-icon {
+:deep(.btn-tail-icon) {
   margin-left: 8px;
 }
 </style>

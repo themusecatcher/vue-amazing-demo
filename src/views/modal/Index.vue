@@ -10,14 +10,14 @@ import {
   NotificationFilled,
   SoundFilled
 } from '@ant-design/icons-vue'
+import { format } from 'date-fns'
 import { Button, Switch } from 'vue-amazing-ui'
 // 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
 import 'vue-amazing-ui/es/button/style'
 import 'vue-amazing-ui/es/switch/style'
-import { format } from 'date-fns'
 import { createDiscreteApi, useMessage, useModal } from 'vue-amazing-ui'
 import type { DiscreteApiInstance, ModalApi, ModalReactive, ModalUpdate, SelectOption } from 'vue-amazing-ui'
-// 以下组件在渲染函数（h）中作编程式引用，需要组件值：web-vue 未做全局注册，故显式按需引入
+// 以下组件在渲染函数（h）中作编程式引用，需要组件值：本项目未做全局注册，故显式按需引入
 // setup 内调用 useModal()：需外层存在 <ModalProvider>（本项目已在 App.vue 入口全局包裹）
 const modal = useModal()
 // 用于把各类回调结果反馈到页面上，避免只能看控制台
@@ -106,7 +106,7 @@ function formatRenderSeconds(seconds: number | null): string {
 }
 // 未渲染时置灰，已渲染时高亮，直观区分懒渲染与预渲染
 function renderValueStyle(seconds: number | null): CSSProperties {
-  return { fontSize: '20px', color: seconds === null ? 'rgba(0, 0, 0, 0.45)' : '#1677ff' }
+  return { fontSize: '20px', color: seconds === null ? 'var(--va-text-color-3)' : '#1677ff' }
 }
 const lazyRender = computed(() => ({
   text: formatRenderSeconds(renderSeconds.lazy),
@@ -963,7 +963,7 @@ const layerZIndexOpen = ref(false)
             <Button type="primary" @click="onAfterCloseModal">打开弹窗</Button>
           </template>
           <p class="demo-variant-desc">适合做资源清理或路由跳转</p>
-          <Space :gap="32" wrap>
+          <Space :gap="32">
             <Statistic title="触发次数" :value="afterCloseCount" :value-style="statisticValueStyle" />
             <Statistic title="最近触发" :value-style="statisticValueStyle">
               {{ lastAfterCloseTime ?? '—' }}
@@ -1150,7 +1150,7 @@ const layerZIndexOpen = ref(false)
 }
 .demo-group-desc {
   margin: 0 0 16px;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--va-text-color-2);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -1160,7 +1160,7 @@ const layerZIndexOpen = ref(false)
 }
 .demo-variant-desc {
   margin: 0 0 12px;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--va-text-color-2);
   font-size: 14px;
   line-height: 1.6;
 }

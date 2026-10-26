@@ -191,34 +191,34 @@ function onClick(e: Event) {
       <Space>
         <Button :disabled="disabled" type="primary" ghost>Primary Ghost Button</Button>
         <Button :disabled="disabled" type="danger" ghost>Danger Ghost Button</Button>
-        <Button :disabled="disabled" type="primary" ghost shape="circle">
+        <Button :disabled="disabled" type="primary" shape="circle">
           <template #icon>
             <SearchOutlined />
           </template>
         </Button>
-        <Button :disabled="disabled" type="primary" ghost shape="round">
+        <Button :disabled="disabled" type="primary" shape="round">
           <template #icon>
             <SearchOutlined />
           </template>
           Search
         </Button>
-        <Button :disabled="disabled" type="primary" ghost shape="round">
+        <Button :disabled="disabled" type="primary" shape="round">
           <template #icon>
             <SearchOutlined />
           </template>
         </Button>
-        <Button :disabled="disabled" type="danger" ghost shape="circle">
+        <Button :disabled="disabled" type="danger" shape="circle">
           <template #icon>
             <DownloadOutlined />
           </template>
         </Button>
-        <Button :disabled="disabled" type="danger" ghost shape="round">
+        <Button :disabled="disabled" type="danger" shape="round">
           <template #icon>
             <DownloadOutlined />
           </template>
           Download
         </Button>
-        <Button :disabled="disabled" type="danger" ghost shape="round">
+        <Button :disabled="disabled" type="danger" shape="round">
           <template #icon>
             <DownloadOutlined />
           </template>

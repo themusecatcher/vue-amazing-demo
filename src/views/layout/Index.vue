@@ -125,7 +125,7 @@ const onBreakpoint = (broken: boolean) => {
       </LayoutHeader>
       <LayoutContent style="padding: 0 50px">
         <Breadcrumb :routes="routes" style="margin: 16px 0" />
-        <div style="padding: 24px; background: #fff; min-height: 280px">Content</div>
+        <div style="padding: 24px; background: var(--va-bg-container-color); min-height: 280px">Content</div>
       </LayoutContent>
       <LayoutFooter style="text-align: center">Vue Amazing UI ©2023 Created by the Muse Catcher</LayoutFooter>
     </Layout>
@@ -141,7 +141,7 @@ const onBreakpoint = (broken: boolean) => {
         </Menu>
       </LayoutHeader>
       <Layout>
-        <LayoutSider width="200" style="background: #fff">
+        <LayoutSider width="200" style="background: var(--va-bg-container-color)">
           <Menu
             v-model:selectedKeys="topSide2SiderKeys"
             v-model:openKeys="topSide2OpenKeys"
@@ -188,7 +188,9 @@ const onBreakpoint = (broken: boolean) => {
         </LayoutSider>
         <Layout style="padding: 0 24px 24px">
           <Breadcrumb :routes="routes" style="margin: 16px 0" />
-          <LayoutContent style="background: #fff; padding: 24px; margin: 0; min-height: 280px">Content</LayoutContent>
+          <LayoutContent style="background: var(--va-bg-container-color); padding: 24px; margin: 0; min-height: 280px"
+            >Content</LayoutContent
+          >
         </Layout>
       </Layout>
     </Layout>
@@ -206,8 +208,8 @@ const onBreakpoint = (broken: boolean) => {
       </LayoutHeader>
       <LayoutContent style="padding: 0 50px">
         <Breadcrumb :routes="routes" style="margin: 16px 0" />
-        <Layout style="padding: 24px 0; background: #fff">
-          <LayoutSider width="200" style="background: #fff">
+        <Layout style="padding: 24px 0; background: var(--va-bg-container-color)">
+          <LayoutSider width="200" style="background: var(--va-bg-container-color)">
             <Menu
               v-model:selectedKeys="topSideSiderKeys"
               v-model:openKeys="topSideOpenKeys"
@@ -291,10 +293,10 @@ const onBreakpoint = (broken: boolean) => {
           </Menu>
         </LayoutSider>
         <Layout>
-          <LayoutHeader style="background: #fff; padding: 0" />
+          <LayoutHeader style="background: var(--va-bg-container-color); padding: 0" />
           <LayoutContent style="margin: 0 16px">
             <Breadcrumb :routes="sideRoutes" style="margin: 16px 0" />
-            <div style="padding: 24px; background: #fff; min-height: 360px">Bill is a cat.</div>
+            <div style="padding: 24px; background: var(--va-bg-container-color); min-height: 360px">Bill is a cat.</div>
           </LayoutContent>
           <LayoutFooter style="text-align: center">Vue Amazing UI ©2023 Created by the Muse Catcher</LayoutFooter>
         </Layout>
@@ -322,11 +324,13 @@ const onBreakpoint = (broken: boolean) => {
         </Menu>
       </LayoutSider>
       <Layout>
-        <LayoutHeader style="background: #fff; padding: 0">
+        <LayoutHeader style="background: var(--va-bg-container-color); padding: 0">
           <MenuUnfoldOutlined v-if="collapsedCustom" class="trigger" @click="collapsedCustom = !collapsedCustom" />
           <MenuFoldOutlined v-else class="trigger" @click="collapsedCustom = !collapsedCustom" />
         </LayoutHeader>
-        <LayoutContent style="margin: 24px 16px; padding: 24px; background: #fff; min-height: 280px">
+        <LayoutContent
+          style="margin: 24px 16px; padding: 24px; background: var(--va-bg-container-color); min-height: 280px"
+        >
           Content
         </LayoutContent>
       </Layout>
@@ -361,9 +365,9 @@ const onBreakpoint = (broken: boolean) => {
         </Menu>
       </LayoutSider>
       <Layout>
-        <LayoutHeader style="background: #fff; padding: 0" />
+        <LayoutHeader style="background: var(--va-bg-container-color); padding: 0" />
         <LayoutContent style="margin: 24px 16px 0">
-          <div style="padding: 24px; background: #fff; min-height: 360px">content</div>
+          <div style="padding: 24px; background: var(--va-bg-container-color); min-height: 360px">content</div>
         </LayoutContent>
         <LayoutFooter style="text-align: center">Vue Amazing UI ©2023 Created by the Muse Catcher</LayoutFooter>
       </Layout>
@@ -411,9 +415,9 @@ const onBreakpoint = (broken: boolean) => {
           </Menu>
         </LayoutSider>
         <Layout>
-          <LayoutHeader style="background: #fff; padding: 0" />
+          <LayoutHeader style="background: var(--va-bg-container-color); padding: 0" />
           <LayoutContent style="margin: 24px 16px 0; overflow: initial">
-            <div style="padding: 24px; background: #fff; text-align: center">
+            <div style="padding: 24px; background: var(--va-bg-container-color); text-align: center">
               ...<br />Really<br />...<br />...<br />...<br />...<br />...<br />...<br />long<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />...<br />content
             </div>
           </LayoutContent>
@@ -436,7 +440,7 @@ const onBreakpoint = (broken: boolean) => {
         </LayoutHeader>
         <LayoutContent style="padding: 0 50px">
           <Breadcrumb :routes="routes" style="margin: 16px 0" />
-          <div style="padding: 24px; background: #fff; min-height: 380px">Content</div>
+          <div style="padding: 24px; background: var(--va-bg-container-color); min-height: 380px">Content</div>
         </LayoutContent>
         <LayoutFooter style="text-align: center">Vue Amazing UI ©2023 Created by the Muse Catcher</LayoutFooter>
       </Layout>
@@ -467,9 +471,9 @@ const onBreakpoint = (broken: boolean) => {
         </Menu>
       </LayoutSider>
       <Layout>
-        <LayoutHeader style="background: #fff; padding: 0" />
+        <LayoutHeader style="background: var(--va-bg-container-color); padding: 0" />
         <LayoutContent style="margin: 24px 16px 0">
-          <div style="padding: 24px; background: #fff; min-height: 360px">content</div>
+          <div style="padding: 24px; background: var(--va-bg-container-color); min-height: 360px">content</div>
         </LayoutContent>
         <LayoutFooter style="text-align: center">Vue Amazing UI ©2023 Created by the Muse Catcher</LayoutFooter>
       </Layout>
@@ -535,13 +539,13 @@ const onBreakpoint = (broken: boolean) => {
           </Scrollbar>
         </LayoutSider>
         <Layout>
-          <LayoutHeader style="background: #fff; padding: 0" />
+          <LayoutHeader style="background: var(--va-bg-container-color); padding: 0" />
           <LayoutContent>
             <Scrollbar style="height: 100%">
-              <div style="padding: 24px; background: #fff">
+              <div style="padding: 24px; background: var(--va-bg-container-color)">
                 <template v-for="i in 12" :key="i">
                   <h3 style="margin: 0 0 8px; font-size: 16px">Section {{ i }}</h3>
-                  <p style="margin: 0 0 24px; color: rgba(0, 0, 0, 0.45)">
+                  <p style="margin: 0 0 24px; color: var(--va-text-color-3)">
                     Sider 与内容区各自独立滚动，滚动条均由 Scrollbar 组件提供
                   </p>
                 </template>
@@ -554,7 +558,7 @@ const onBreakpoint = (broken: boolean) => {
   </div>
 </template>
 <style lang="less" scoped>
-// 承载「整页」形态的用例（对应官网 iframe 承载），限高并允许内部滚动，避免撑高文档页面
+// 承载「整页」形态的用例，限高并允许内部滚动，避免撑高文档页面
 .demo-container {
   height: 360px;
   overflow: auto;
@@ -577,7 +581,7 @@ const onBreakpoint = (broken: boolean) => {
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
 }
-// 占位块更淡的用例（与官网各用例取值一致）
+// 占位块更淡的用例
 .faint {
   background: rgba(255, 255, 255, 0.2);
 }

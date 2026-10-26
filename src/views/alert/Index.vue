@@ -5,7 +5,7 @@ function onClose(e: Event) {
 }
 </script>
 <template>
-  <div style="width: 425px">
+  <div style="width: 100%">
     <h1>{{ $route.name }} {{ $route.meta.title }}</h1>
     <h2 class="mt30 mb10">基本使用</h2>
     <Alert message="Default Text" />
@@ -161,7 +161,7 @@ function onClose(e: Event) {
         show-icon
       >
         <template #icon>
-          <SmileOutlined />
+          <smile-outlined />
         </template>
       </Alert>
       <Alert
@@ -171,17 +171,17 @@ function onClose(e: Event) {
         show-icon
       >
         <template #icon>
-          <SmileOutlined />
+          <smile-outlined />
         </template>
       </Alert>
       <Alert message="Warning" description="This is a warning notice about copywriting." type="warning" show-icon>
         <template #icon>
-          <SmileOutlined />
+          <smile-outlined />
         </template>
       </Alert>
       <Alert message="Error" description="This is an error message about copywriting." type="error" show-icon>
         <template #icon>
-          <SmileOutlined />
+          <smile-outlined />
         </template>
       </Alert>
       <Alert

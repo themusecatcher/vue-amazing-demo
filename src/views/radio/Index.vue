@@ -119,7 +119,6 @@ watchEffect(() => {
   console.log('checked', checked.value)
 })
 </script>
-
 <template>
   <div>
     <h1>{{ $route.name }} {{ $route.meta.title }}</h1>
@@ -441,15 +440,14 @@ watchEffect(() => {
     </Flex>
   </div>
 </template>
-
 <style lang="less" scoped>
 .demo-label {
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--va-text-color-3);
   font-size: 13px;
   line-height: 22px;
 }
 .demo-tip {
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--va-text-color-3);
   font-size: 13px;
   line-height: 22px;
 }
