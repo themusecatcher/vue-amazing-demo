@@ -43,13 +43,6 @@ function onSelect(info: { key: MenuKey }) {
   }
 }
 
-/**
- * 少数演示页需要验证「随文档滚动」的行为（水印页的全屏水印 fixed 差异）：
- * 由 index.ts 的 windowScroll 声明，此时不套 Scrollbar，滚动交回文档，侧栏吸附视口顶部
- */
-const windowScroll = computed<boolean>(() => route.meta.windowScroll === true)
-/** 内容滚动容器：整页滚动页退化为普通 div，避免两套滚动并存 */
-const contentWrapper = computed(() => (windowScroll.value ? 'div' : Scrollbar))
 const contentScrollRef = ref<InstanceType<typeof Scrollbar> | null>(null)
 /** 内容区滚动由 Scrollbar 承载（路由的 scrollBehavior 只作用于 window，管不到它），故路由变化后手动复位 */
 watch(
@@ -65,8 +58,8 @@ const hideBackTop = computed(() => route.meta.backTop === false)
 </script>
 
 <template>
-  <Row class="demo-row" :class="{ 'demo-row-window': windowScroll }">
-    <Col class="demo-menu-col" :class="{ 'demo-menu-col-window': windowScroll }" :xs="5" :xl="4">
+  <Row class="demo-row">
+    <Col class="demo-menu-col" :xs="5" :xl="4">
       <div class="demo-menu-header">
         <div class="demo-menu-title-row">
           <!-- 标题即首页入口：菜单里没有首页项，靠这里回到总览页 -->
@@ -87,7 +80,7 @@ const hideBackTop = computed(() => route.meta.backTop === false)
       </Scrollbar>
     </Col>
     <Col class="demo-content-col" :xs="19" :xl="20">
-      <component :is="contentWrapper" ref="contentScrollRef" class="demo-content-scroll">
+      <Scrollbar ref="contentScrollRef" class="demo-content-scroll">
         <div class="router-view">
           <RouterView v-slot="{ Component }">
             <Transition name="fade" mode="out-in">
@@ -123,7 +116,7 @@ const hideBackTop = computed(() => route.meta.backTop === false)
           <ThemeColorButton />
           <BackTop v-if="!hideBackTop" />
         </div>
-      </component>
+      </Scrollbar>
     </Col>
   </Row>
 </template>
@@ -131,19 +124,6 @@ const hideBackTop = computed(() => route.meta.backTop === false)
 <style lang="less" scoped>
 // 整行撑满视口高度，作为两列高度的唯一声明源（Row 为 wrap 容器，交叉轴 stretch 无法压低列高，故列高以 100% 派生）
 .demo-row {
-  height: 100vh;
-  // 整页滚动页：高度交由内容撑开，侧栏改为吸附视口（见 .demo-menu-col-window）
-  &-window {
-    height: auto;
-    align-items: flex-start;
-  }
-}
-
-// 整页滚动页的侧栏：吸附视口顶部并撑满一屏，内容随文档滚动
-.demo-menu-col-window {
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
   height: 100vh;
 }
 
