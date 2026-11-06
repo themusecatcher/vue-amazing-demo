@@ -16,6 +16,7 @@ import type {
   ConfigProviderProps,
   ConfigProviderTheme,
   CarouselImage,
+  CascaderOption,
   ItemType,
   LoadingBarApi,
   MenuKey,
@@ -26,7 +27,6 @@ import type {
   SegmentedOption,
   StepsItem,
   TableColumn,
-  TabsItem,
   TextScrollItem,
   ThemeMode,
   TimelineItemProps,
@@ -87,7 +87,9 @@ const autoCompleteOptions = ref<string[]>([])
 const checkboxChecked = ref<boolean>(false)
 const cardDate = ref<number>(Date.now())
 const dateValue = ref<number>(Date.now())
-const inputValue = ref<string>('')
+// 各分节独立绑定，操作任一用例不会联动其余用例
+const seedInputValue = ref<string>('')
+const modeInputValue = ref<string>('')
 const inputNumberValue = ref<number>(3)
 const inputSearchValue = ref<string>('')
 // 这三处刻意用组件形态 + @ready 取实例：useMessage() / useModal() / useNotification() 命中的是入口 App.vue 的 Provider，
@@ -159,6 +161,53 @@ const seedMenuItems = ref<ItemType[]>([
   },
   { key: '9', icon: () => h(InboxOutlined), label: 'Navigation Five' }
 ])
+const cascaderOptions: CascaderOption[] = [
+  {
+    value: 'zhejiang',
+    label: '浙江',
+    children: [
+      {
+        value: 'hangzhou',
+        label: '杭州',
+        children: [
+          { value: 'xihu', label: '西湖' },
+          { value: 'xiasha', label: '下沙' }
+        ]
+      },
+      {
+        value: 'ningbo',
+        label: '宁波',
+        children: [
+          { value: 'yinzhou', label: '鄞州' },
+          { value: 'beilun', label: '北仑' }
+        ]
+      }
+    ]
+  },
+  {
+    value: 'jiangsu',
+    label: '江苏',
+    children: [
+      {
+        value: 'nanjing',
+        label: '南京',
+        children: [
+          { value: 'zhonghuamen', label: '中华门' },
+          { value: 'xuanwu', label: '玄武' }
+        ]
+      },
+      {
+        value: 'wuxi',
+        label: '无锡',
+        children: [
+          { value: 'jiangyin', label: '江阴' },
+          { value: 'yixing', label: '宜兴' }
+        ]
+      }
+    ]
+  }
+]
+const cascaderValue = ref<(string | number)[]>(['zhejiang', 'hangzhou', 'xihu'])
 const selectOptions = ref<SelectOption[]>([
   {
     label: '北京市',
@@ -211,7 +260,8 @@ const stepsItems = ref<StepsItem[]>([
   }
 ])
 const current = ref<number>(2)
-const switchChecked = ref<boolean>(false)
+const seedSwitchChecked = ref<boolean>(false)
+const modeSwitchChecked = ref<boolean>(false)
 const darkSelectValue = ref<number>(1)
 const darkSelectOptions: SelectOption[] = [
   { label: 'Option 1', value: 1 },
@@ -219,38 +269,6 @@ const darkSelectOptions: SelectOption[] = [
   { label: 'Option 3', value: 3 }
 ]
 const darkPage = ref<number>(1)
-const tabItems = ref<TabsItem[]>([
-  {
-    key: '1',
-    tab: 'Tab 1',
-    content: 'Content of Tab Pane 1'
-  },
-  {
-    key: '2',
-    tab: 'Tab 2',
-    content: 'Content of Tab Pane 2'
-  },
-  {
-    key: '3',
-    tab: 'Tab 3',
-    content: 'Content of Tab Pane 3'
-  },
-  {
-    key: '4',
-    tab: 'Tab 4',
-    content: 'Content of Tab Pane 4'
-  },
-  {
-    key: '5',
-    tab: 'Tab 5',
-    content: 'Content of Tab Pane 5'
-  },
-  {
-    key: '6',
-    tab: 'Tab 6',
-    content: 'Content of Tab Pane 6'
-  }
-])
 const activeKey = ref<string>('1')
 const textareaValue = ref<string>('')
 const scrollItems = ref<TextScrollItem[]>([
@@ -422,7 +440,7 @@ const tokenStyle: Record<string, string> = {
     </Descriptions>
     <h2 class="mt30 mb10">种子换色：全组件联动</h2>
     <p class="mb10">
-      只修改种子 <code>seed.primary</code> 一个值，<code>39</code> 个消费主色的组件同步换色，无需逐组件传色。
+      只修改种子 <code>seed.primary</code> 一个值，<code>40</code> 个消费主色的组件同步换色，无需逐组件传色。
     </p>
     <!--
       用默认包裹元素形态（abstract: false）演示：本站 <html> 已被 App.vue 的应用级主题占用，
@@ -483,10 +501,11 @@ const tokenStyle: Record<string, string> = {
           />
           <BackTop />
           <Button type="primary">Primary Button</Button>
+          <Cascader v-model:value="cascaderValue" :options="cascaderOptions" />
           <Checkbox v-model:checked="checkboxChecked">Checkbox</Checkbox>
           <ColorPicker :width="200" />
           <DatePicker v-model:value="dateValue" format="yyyy-MM-dd" placeholder="请选择日期" />
-          <Input :width="200" v-model:value="inputValue" placeholder="please input" />
+          <Input :width="200" v-model:value="seedInputValue" placeholder="please input" />
           <InputNumber :width="120" v-model:value="inputNumberValue" placeholder="please input" />
           <InputSearch
             :width="200"
@@ -513,11 +532,11 @@ const tokenStyle: Record<string, string> = {
           </Popconfirm>
           <Radio v-model:checked="radioChecked">Radio</Radio>
           <Select :options="selectOptions" v-model:value="selectedValue" />
-          <Switch v-model:value="switchChecked" />
+          <Switch v-model:value="seedSwitchChecked" />
           <Textarea :width="360" v-model:value="textareaValue" placeholder="custom theme textarea" />
           <Image src="https://cdn.jsdelivr.net/gh/themusecatcher/resources@0.1.2/1.jpg" />
         </Space>
-        <Space align="center" wrap>
+        <Space align="center">
           <Badge :value="5">
             <Avatar shape="square" size="large" />
           </Badge>
@@ -621,7 +640,11 @@ const tokenStyle: Record<string, string> = {
           }"
         />
         <Card width="50%">
-          <Tabs :items="tabItems" v-model:active-key="activeKey" />
+          <Tabs v-model:active-key="activeKey">
+            <TabPane key="1" tab="Tab 1">Content of Tab Pane 1</TabPane>
+            <TabPane key="2" tab="Tab 2">Content of Tab Pane 2</TabPane>
+            <TabPane key="3" tab="Tab 3">Content of Tab Pane 3</TabPane>
+          </Tabs>
         </Card>
         <TextScroll :items="scrollItems" />
         <Upload v-model:fileList="fileList" />
@@ -633,8 +656,8 @@ const tokenStyle: Record<string, string> = {
         作用域，不存在第二份色值，因此始终同步；</li
       >
       <li class="mb10"
-        >示例覆盖全部 39 个消费主色的组件；<code>Table</code> 排序箭头、<code>Badge</code> 计数底、<code>Timeline</code>
-        的 blue 圆点、<code>GradientText</code> 渐变端点均取自种子（点击表头可见）；</li
+        >示例覆盖全部 40 个消费主色的组件；<code>Table</code> 排序箭头、<code>Badge</code> 计数底、<code>Timeline</code>
+        的 <code>blue</code> 圆点、<code>GradientText</code> 渐变端点均取自种子（点击表头可见）；</li
       >
       <li class="mb10"
         ><code>Tag</code> 的 processing 预设取主色，success / warning / error 取语义色（见「语义种子」）；其余 13
@@ -651,28 +674,28 @@ const tokenStyle: Record<string, string> = {
       <code>seed</code> 的 <code>success</code> / <code>warning</code> / <code>error</code> / <code>info</code> 与
       <code>primary</code> 共用同一套色阶规则：修改单个色值，Alert / Tag / 危险按钮的常态 / 浅底 / 描边同步更新。
     </p>
-    <Flex vertical gap="middle">
-      <Space align="center" wrap>
+    <Flex vertical>
+      <Space align="center">
         <span>success:</span>
         <ColorPicker style="width: 160px" v-model:value="seedSuccess" :show-alpha="false" />
         <span>warning:</span>
         <ColorPicker style="width: 160px" v-model:value="seedWarning" :show-alpha="false" />
       </Space>
-      <Space align="center" wrap>
+      <Space align="center">
         <span>error:</span>
         <ColorPicker style="width: 160px" v-model:value="seedError" :show-alpha="false" />
         <span>info:</span>
         <ColorPicker style="width: 160px" v-model:value="seedInfo" :show-alpha="false" />
       </Space>
       <ConfigProvider :abstract="false" :theme="seedTheme">
-        <Flex vertical gap="middle">
-          <Space align="center" wrap>
+        <Flex vertical>
+          <Space align="center">
             <Alert style="width: 180px" type="success" message="Success" show-icon />
             <Alert style="width: 180px" type="warning" message="Warning" show-icon />
             <Alert style="width: 180px" type="error" message="Error" show-icon />
             <Alert style="width: 180px" type="info" message="Info" show-icon />
           </Space>
-          <Space align="center" wrap>
+          <Space align="center">
             <Button type="danger">Danger</Button>
             <Tag color="success">Success</Tag>
             <Tag color="warning">Warning</Tag>
@@ -709,25 +732,25 @@ const tokenStyle: Record<string, string> = {
       <!-- 只切 mode：带包裹元素时派生结果写到本子树，不覆盖 <html> 上的页面级主题 -->
       <ConfigProvider :abstract="false" :theme="{ mode }">
         <Card width="70%" title="作用域内的明暗切换">
-          <Flex vertical gap="middle">
-            <Space align="center" wrap>
+          <Flex vertical>
+            <Space align="center">
               <Button type="primary">Primary Button</Button>
               <Button>Default Button</Button>
               <Button type="danger">Danger Button</Button>
               <Tag color="blue">Tag</Tag>
-              <Switch v-model:value="switchChecked" />
+              <Switch v-model:value="modeSwitchChecked" />
               <Slider :value="60" style="width: 160px" />
               <Progress :percent="percent" style="width: 180px" />
             </Space>
-            <Space align="center" wrap>
-              <Input :width="180" v-model:value="inputValue" placeholder="please input" />
+            <Space align="center">
+              <Input :width="180" v-model:value="modeInputValue" placeholder="please input" />
               <Select :options="darkSelectOptions" v-model:value="darkSelectValue" :width="160" />
               <Pagination v-model:page="darkPage" :total="50" :page-size="10" />
               <Tooltip tooltip="浮层跟随当前作用域">
                 <Button>Hover me</Button>
               </Tooltip>
             </Space>
-            <Space align="center" wrap>
+            <Space align="center">
               <Alert style="width: 190px" message="Info Text" type="info" show-icon />
               <Alert style="width: 190px" message="Success Text" type="success" show-icon />
               <Alert style="width: 190px" message="Warning Text" type="warning" show-icon />
@@ -742,14 +765,14 @@ const tokenStyle: Record<string, string> = {
       <code>theme.components.&lt;组件&gt;.primaryColor</code> 仅覆盖该组件的整套主色（常态 / 悬停 / 按下 / 浅底 /
       描边），其余组件仍取 <code>seed</code>。典型场景：按钮改为品牌绿，链接保持品牌蓝。
     </p>
-    <Flex vertical gap="middle">
-      <Space align="center" wrap>
+    <Flex vertical>
+      <Space align="center">
         <span>componentPrimary:</span>
         <ColorPicker style="width: 200px" v-model:value="componentPrimary" :show-alpha="false" />
       </Space>
       <Flex vertical gap="small">
         <span class="theme-caption">默认 seed（Button / Slider / Progress 全部跟随）</span>
-        <Space align="center" wrap>
+        <Space align="center">
           <Button type="primary">Primary Button</Button>
           <Slider :value="40" style="width: 180px" />
           <Progress :percent="60" style="width: 160px" />
@@ -758,7 +781,7 @@ const tokenStyle: Record<string, string> = {
       <Flex vertical gap="small">
         <span class="theme-caption">theme.components（只改这三个组件）</span>
         <ConfigProvider :abstract="false" :theme="componentTheme">
-          <Space align="center" wrap>
+          <Space align="center">
             <Button type="primary">Primary Button</Button>
             <Slider :value="40" style="width: 180px" />
             <Progress :percent="60" style="width: 160px" />
@@ -780,8 +803,8 @@ const tokenStyle: Record<string, string> = {
       <code>ConfigProvider</code>。
     </p>
     <div class="token-zone" :style="tokenStyle">
-      <Flex vertical gap="middle">
-        <Space align="center" wrap>
+      <Flex vertical>
+        <Space align="center">
           <Button type="primary">Token Button</Button>
           <Button>Default Button</Button>
         </Space>
@@ -811,8 +834,8 @@ const tokenStyle: Record<string, string> = {
       </Space>
       <!-- 作用域换肤：外层也要带包裹元素，变量才能只落在本子树内、不覆盖 <html> 上的页面级主题 -->
       <ConfigProvider :abstract="false" :theme="theme">
-        <Flex vertical gap="middle">
-          <Space align="center" wrap>
+        <Flex vertical>
+          <Space align="center">
             <span class="theme-caption">外层作用域</span>
             <Alert style="width: 180px" message="Outer Alert" type="info" show-icon />
             <Button type="primary">Outer Button</Button>
@@ -821,7 +844,7 @@ const tokenStyle: Record<string, string> = {
           <ConfigProvider :abstract="false" :theme="{ seed: { primary: scopePrimaryColor } }">
             <Flex vertical gap="small">
               <span class="theme-caption">子树作用域：只影响这里</span>
-              <Space align="center" wrap>
+              <Space align="center">
                 <Alert style="width: 180px" message="Scoped Alert" type="info" show-icon />
                 <Button type="primary">Scoped Button</Button>
               </Space>
@@ -931,7 +954,7 @@ const tokenStyle: Record<string, string> = {
       <code>data-va-mode</code>，与主应用主题互不影响；传 <code>computed</code> 时改色即时生效，无需重建实例。
     </p>
     <Flex vertical gap="small">
-      <Space align="center" wrap>
+      <Space align="center">
         <span>customPrimary:</span>
         <ColorPicker style="width: 200px" v-model:value="discreteCustomPrimary" :show-alpha="false" />
       </Space>

@@ -68,7 +68,7 @@ export const demoGroups: DemoGroup[] = [
       { key: 'slider', name: 'Slider', title: '滑动输入条' },
       { key: 'rate', name: 'Rate', title: '评分' },
       { key: 'color-picker', name: 'ColorPicker', title: '颜色选择器' },
-      { key: 'date-picker', name: 'DatePicker', title: '日期选择' },
+      { key: 'date-picker', name: 'DatePicker', title: '日期选择器' },
       { key: 'calendar', name: 'Calendar', title: '日历' },
       { key: 'time-picker', name: 'TimePicker', title: '时间选择器' },
       { key: 'upload', name: 'Upload', title: '上传' }

@@ -402,7 +402,7 @@ const columnsHeaderGroup = reactive<TableColumn[]>([
         dataIndex: 'age',
         key: 'age',
         width: 200,
-        sorter: (a: Record<string, number>, b: Record<string, number>) => (a.age ?? 0) - (b.age ?? 0)
+        sorter: (a: Record<string, number>, b: Record<string, number>) => a.age - b.age
       },
       {
         title: 'Address',
@@ -463,20 +463,19 @@ const columnsSort = reactive<TableColumn[]>([
   {
     title: 'Name',
     dataIndex: 'name',
-    sorter: (a: Record<string, string>, b: Record<string, string>) => (a.name?.length ?? 0) - (b.name?.length ?? 0),
+    sorter: (a: Record<string, string>, b: Record<string, string>) => a.name.length - b.name.length,
     sortDirections: ['descend']
   },
   {
     title: 'Age',
     dataIndex: 'age',
     defaultSortOrder: 'descend',
-    sorter: (a: Record<string, number>, b: Record<string, number>) => (a.age ?? 0) - (b.age ?? 0)
+    sorter: (a: Record<string, number>, b: Record<string, number>) => a.age - b.age
   },
   {
     title: 'Address',
     dataIndex: 'address',
-    sorter: (a: Record<string, string>, b: Record<string, string>) =>
-      (a.address?.length ?? 0) - (b.address?.length ?? 0),
+    sorter: (a: Record<string, string>, b: Record<string, string>) => a.address.length - b.address.length,
     sortDirections: ['descend', 'ascend']
   }
 ])
@@ -821,10 +820,7 @@ const handleCellEdit = (key: string) => {
   cellEditableData[key] = dataSourceCellEditable.value.filter((item) => key === item.key)[0]
 }
 const handleCellSave = (key: string) => {
-  const target = dataSourceCellEditable.value.find((item) => key === item.key)
-  if (target) {
-    Object.assign(target, cellEditableData[key])
-  }
+  Object.assign(dataSourceCellEditable.value.filter((item) => key === item.key)[0], cellEditableData[key])
   delete cellEditableData[key]
 }
 const handleCellDelete = (key: string) => {
@@ -835,11 +831,7 @@ const handleRowEdit = (key: string) => {
   rowEditableData[key] = dataSourceRowEditable.value.filter((item) => key === item.key)[0]
 }
 const handleRowSave = (key: string) => {
-  // 行编辑保存须写回行数据源（官方演示页此处误写成单元格数据源，已修正）
-  const target = dataSourceRowEditable.value.find((item) => key === item.key)
-  if (target) {
-    Object.assign(target, rowEditableData[key])
-  }
+  Object.assign(dataSourceRowEditable.value.filter((item) => key === item.key)[0], rowEditableData[key])
   delete rowEditableData[key]
 }
 const handleRowCancel = (key: string) => {
@@ -977,7 +969,7 @@ function onSortChange(column: TableColumn, currentDataSource: Record<string, any
     <Flex vertical>
       <Space align="center"> bordered: <Switch v-model:value="headerFooterbordered" /> </Space>
       <Table :columns="columns" :data-source="dataSource" :bordered="headerFooterbordered">
-        <template #header> Header firstData name: {{ dataSource[0]?.name }} </template>
+        <template #header> Header firstData name: {{ dataSource[0].name }} </template>
         <template #bodyCell="{ column, text }">
           <template v-if="column.key === 'name'">
             <a> hello {{ text }} </a>
@@ -994,7 +986,7 @@ function onSortChange(column: TableColumn, currentDataSource: Record<string, any
             </span>
           </template>
         </template>
-        <template #footer> Footer lastData name: {{ dataSource[dataSource.length - 1]?.name }} </template>
+        <template #footer> Footer lastData name: {{ dataSource[dataSource.length - 1].name }} </template>
       </Table>
     </Flex>
     <h2 class="mt30 mb10">单元格自动省略</h2>
@@ -1020,28 +1012,30 @@ function onSortChange(column: TableColumn, currentDataSource: Record<string, any
       </template>
     </Table>
     <h2 class="mt30 mb10">可编辑单元格</h2>
-    <Button style="margin-bottom: 16px" type="primary" :icon="h(PlusOutlined)" @click="handleCellAdd">新增</Button>
-    <Table :columns="columnsCellEditable" :data-source="dataSourceCellEditable" bordered>
-      <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="editable-cell">
-            <Flex v-if="cellEditableData[record.key]" justify="space-between" align="center">
-              <Input v-model:value="cellEditableData[record.key].name" @enter="handleCellSave(record.key)" />
-              <CheckOutlined class="cell-icon-check" @click="handleCellSave(record.key)" />
-            </Flex>
-            <Flex v-else justify="space-between" align="center">
-              {{ text || ' ' }}
-              <EditOutlined class="cell-icon" @click="handleCellEdit(record.key)" />
-            </Flex>
-          </div>
+    <Flex vertical>
+      <Space><Button type="primary" :icon="h(PlusOutlined)" @click="handleCellAdd">新增</Button></Space>
+      <Table :columns="columnsCellEditable" :data-source="dataSourceCellEditable" bordered>
+        <template #bodyCell="{ column, text, record }">
+          <template v-if="column.dataIndex === 'name'">
+            <div class="editable-cell">
+              <Flex v-if="cellEditableData[record.key]" justify="space-between" align="center">
+                <Input v-model:value="cellEditableData[record.key].name" @enter="handleCellSave(record.key)" />
+                <CheckOutlined class="cell-icon-check" @click="handleCellSave(record.key)" />
+              </Flex>
+              <Flex v-else justify="space-between" align="center">
+                {{ text || ' ' }}
+                <EditOutlined class="cell-icon" @click="handleCellEdit(record.key)" />
+              </Flex>
+            </div>
+          </template>
+          <template v-else-if="column.dataIndex === 'action'">
+            <Popconfirm v-if="dataSourceCellEditable.length" title="Sure to delete?" @ok="handleCellDelete(record.key)">
+              <a>delete</a>
+            </Popconfirm>
+          </template>
         </template>
-        <template v-else-if="column.dataIndex === 'action'">
-          <Popconfirm v-if="dataSourceCellEditable.length" title="Sure to delete?" @ok="handleCellDelete(record.key)">
-            <a>delete</a>
-          </Popconfirm>
-        </template>
-      </template>
-    </Table>
+      </Table>
+    </Flex>
     <h2 class="mt30 mb10">可编辑行</h2>
     <Table
       :columns="columnsRowEditable"

@@ -38,7 +38,7 @@ function customDownload(url: string, fileName?: string) {
       const blobUrl = URL.createObjectURL(xhr.response)
       const a = document.createElement('a')
       a.href = blobUrl
-      a.download = fileName || url.split('?')[0]?.split('/')?.pop() || 'download'
+      a.download = fileName || url.split('?')[0].split('/').pop() || 'download'
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)

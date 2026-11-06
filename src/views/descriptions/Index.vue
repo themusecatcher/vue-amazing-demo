@@ -533,6 +533,6 @@ const activeColumnTip = computed(() => {
 .descriptions-column-rule,
 .descriptions-column-tip {
   font-size: 12px;
-  color: var(--va-text-color-3);
+  color: rgba(0, 0, 0, 0.45);
 }
 </style>

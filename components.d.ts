@@ -96,6 +96,7 @@ declare module 'vue' {
     Swiper: typeof import('vue-amazing-ui')['Swiper']
     Switch: typeof import('vue-amazing-ui')['Switch']
     Table: typeof import('vue-amazing-ui')['Table']
+    TabPane: typeof import('vue-amazing-ui')['TabPane']
     Tabs: typeof import('vue-amazing-ui')['Tabs']
     Tag: typeof import('vue-amazing-ui')['Tag']
     Textarea: typeof import('vue-amazing-ui')['Textarea']

@@ -8,7 +8,15 @@ import {
   EnvironmentOutlined,
   CompassOutlined
 } from '@ant-design/icons-vue'
-const value = ref('')
+// 各分节独立绑定，操作任一用例不会联动其余用例
+const basicValue = ref('')
+const prefixSuffixValue = ref('')
+const addonValue = ref('')
+const sizeValue = ref('')
+const clearValue = ref('')
+const passwordValue = ref('')
+const showCountValue = ref('')
+const disabledValue = ref('')
 const lazyValue = ref('')
 const sizeOptions = [
   {
@@ -25,9 +33,6 @@ const sizeOptions = [
   }
 ]
 const size = ref<InputProps['size']>('middle')
-watchEffect(() => {
-  console.log('value', value.value)
-})
 watchEffect(() => {
   console.log('lazyValue', lazyValue.value)
 })
@@ -52,23 +57,25 @@ function onEnter(e: KeyboardEvent) {
         <br />
         {{ '<Input v-model:value.lazy="msg" />' }}
       </Alert>
-      <Input :width="200" v-model:value="value" placeholder="Basic usage" @change="onChange" @enter="onEnter" />
+      <Input :width="200" v-model:value="basicValue" placeholder="Basic usage" @change="onChange" @enter="onEnter" />
       <Input :width="200" v-model:value.lazy="lazyValue" placeholder="Lazy usage" @change="onChange" @enter="onEnter" />
     </Space>
-    <h2 class="mt30 mb10">未受控输入与行内混排</h2>
-    <p class="mb10">未绑定 <code>v-model</code> 时输入内容由组件自行承载，不会因悬浮 / 聚焦等状态变化丢失</p>
-    <Space gap="small" vertical :width="300">
-      <Input :width="280" placeholder="未绑定 v-model，输入后移开鼠标内容仍保留" />
-    </Space>
-    <p class="mb10 mt10">与文字混排时按基线对齐，与原生 <code>input</code> 同口径</p>
+    <h2 class="mt30 mb10">非受控模式</h2>
+    <p class="mb10"
+      >不传 v-model:value，用 defaultValue 指定初始值；输入、清除与字数提示照常生效；placeholder
+      只是占位提示，不能替代初值</p
+    >
+    <Input :width="200" default-value="非受控初值" allow-clear show-count placeholder="default value" />
+    <h2 class="mt30 mb10">与文字混排</h2>
+    <p class="mb10">与文字同处一行时按基线对齐</p>
     <div style="display: flex; align-items: center; height: 32px; gap: 8px">
       <span>姓名</span>
       <Input :width="200" placeholder="与文字同行" />
     </div>
     <h2 class="mt30 mb10">前缀和后缀</h2>
     <Space gap="small" vertical :width="300">
-      <Input v-model:value="value" placeholder="Basic usage" prefix="￥" suffix="RMB" />
-      <Input v-model:value="value" placeholder="Basic usage">
+      <Input v-model:value="prefixSuffixValue" placeholder="Basic usage" prefix="￥" suffix="RMB" />
+      <Input v-model:value="prefixSuffixValue" placeholder="Basic usage">
         <template #prefix>
           <UserOutlined />
         </template>
@@ -81,8 +88,8 @@ function onEnter(e: KeyboardEvent) {
     </Space>
     <h2 class="mt30 mb10">前置和后置标签</h2>
     <Space gap="small" vertical :width="300">
-      <Input v-model:value="value" placeholder="Basic usage" addon-before="Http://" addon-after=".com" />
-      <Input v-model:value="value" placeholder="Basic usage">
+      <Input v-model:value="addonValue" placeholder="Basic usage" addon-before="Http://" addon-after=".com" />
+      <Input v-model:value="addonValue" placeholder="Basic usage">
         <template #addonAfter>
           <SettingOutlined />
         </template>
@@ -91,8 +98,8 @@ function onEnter(e: KeyboardEvent) {
     <h2 class="mt30 mb10">三种大小</h2>
     <Space gap="small" vertical :width="240">
       <RadioGroup :options="sizeOptions" v-model:value="size" button button-style="solid" />
-      <Input v-model:value="value" :size="size" placeholder="Basic usage" />
-      <Input v-model:value="value" :size="size" placeholder="Basic usage">
+      <Input v-model:value="sizeValue" :size="size" placeholder="Basic usage" />
+      <Input v-model:value="sizeValue" :size="size" placeholder="Basic usage">
         <template #prefix>
           <UserOutlined />
         </template>
@@ -100,7 +107,7 @@ function onEnter(e: KeyboardEvent) {
           <InfoCircleOutlined />
         </template>
       </Input>
-      <Input v-model:value="value" :size="size" placeholder="Basic usage">
+      <Input v-model:value="sizeValue" :size="size" placeholder="Basic usage">
         <template #addonBefore>
           <EnvironmentOutlined />
         </template>
@@ -110,15 +117,15 @@ function onEnter(e: KeyboardEvent) {
       </Input>
     </Space>
     <h2 class="mt30 mb10">带清除图标</h2>
-    <Input :width="200" allow-clear v-model:value="value" placeholder="input with clear icon" />
+    <Input :width="200" allow-clear v-model:value="clearValue" placeholder="input with clear icon" />
     <h2 class="mt30 mb10">密码框</h2>
-    <Input :width="200" password v-model:value="value" placeholder="input password" />
+    <Input :width="200" password v-model:value="passwordValue" placeholder="input password" />
     <h2 class="mt30 mb10">带字数提示</h2>
     <Space vertical>
-      <Input show-count allow-clear v-model:value="value" placeholder="please input" />
-      <Input show-count allow-clear v-model:value="value" :maxlength="20" placeholder="please input" />
+      <Input show-count allow-clear v-model:value="showCountValue" placeholder="please input" />
+      <Input show-count allow-clear v-model:value="showCountValue" :maxlength="20" placeholder="please input" />
     </Space>
     <h2 class="mt30 mb10">禁用</h2>
-    <Input :width="200" disabled v-model:value="value" placeholder="disabled input" />
+    <Input :width="200" disabled v-model:value="disabledValue" placeholder="disabled input" />
   </div>
 </template>
