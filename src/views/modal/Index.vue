@@ -872,7 +872,6 @@ const layerZIndexOpen = ref(false)
       命令式弹窗默认 <code>destroyOnClose: true</code>，关闭即销毁；声明式弹窗默认 <code>false</code>，关闭后保留内容。
       下面分三组演示内容保留、预渲染与关闭回调的差异。
     </p>
-
     <Card class="demo-group">
       <template #title>
         <Space :gap="8">
@@ -906,7 +905,6 @@ const layerZIndexOpen = ref(false)
         </Card>
       </Flex>
     </Card>
-
     <Card class="demo-group">
       <template #title>
         <Space :gap="8">
@@ -946,7 +944,6 @@ const layerZIndexOpen = ref(false)
         <ContentTimer @tick="onPreRenderTick" />
       </Modal>
     </Card>
-
     <Card class="demo-group">
       <template #title>
         <Space :gap="8">

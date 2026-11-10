@@ -22,6 +22,7 @@ declare module 'vue' {
     Card: typeof import('vue-amazing-ui')['Card']
     Carousel: typeof import('vue-amazing-ui')['Carousel']
     Cascader: typeof import('vue-amazing-ui')['Cascader']
+    CheckableTag: typeof import('vue-amazing-ui')['CheckableTag']
     Checkbox: typeof import('vue-amazing-ui')['Checkbox']
     CheckboxGroup: typeof import('vue-amazing-ui')['CheckboxGroup']
     Col: typeof import('vue-amazing-ui')['Col']

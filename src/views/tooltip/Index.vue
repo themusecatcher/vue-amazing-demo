@@ -58,10 +58,11 @@ function gatingDisabled(): boolean {
     <h2 class="mt30 mb10">自定义样式</h2>
     <p class="mb10">
       气泡卡片用 <code>tooltipClass</code> / <code>tooltipStyle</code>，其外层定位面板用 <code>popupClassName</code> /
-      <code>popupStyle</code>，层级用 <code>zIndex</code>
+      <code>popupStyle</code>，层级用 <code>zIndex</code>；复合方向下箭头贴边偏移会跟随卡片的实际圆角自动内移，可用
+      <code>popupStyle</code> 的 <code>--tooltip-arrow-edge</code> 手动指定该偏移
     </p>
     <Space gap="large">
-      <Tooltip :max-width="360" bg-color="#fff" tooltip-class="custom-class">
+      <Tooltip placement="topLeft" :max-width="360" bg-color="#fff" tooltip-class="custom-class">
         <template #tooltip>
           <p style="text-align: center">卡片类名</p>
           通过 tooltipClass 定制气泡卡片的字号、颜色与内边距
