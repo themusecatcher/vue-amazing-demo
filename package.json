@@ -23,8 +23,8 @@
     "date-fns": "^4.4.0",
     "pinia": "^3.0.4",
     "spark-md5": "^3.0.2",
-    "vue": "^3.5.44",
-    "vue-amazing-ui": "^3.9.4",
+    "vue": "^3.5.45",
+    "vue-amazing-ui": "^3.9.5",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {

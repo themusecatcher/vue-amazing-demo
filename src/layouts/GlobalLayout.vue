@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Scrollbar } from 'vue-amazing-ui'
-// 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
-import 'vue-amazing-ui/es/scrollbar/style'
-import type { ItemType, MenuKey } from 'vue-amazing-ui'
+import type { ItemType, MenuKey, ScrollbarExpose } from 'vue-amazing-ui'
 import pkg from 'vue-amazing-ui/package.json'
 import ThemeColorButton from './components/ThemeColorButton.vue'
 import ThemeModeButton from './components/ThemeModeButton.vue'
@@ -43,7 +40,7 @@ function onSelect(info: { key: MenuKey }) {
   }
 }
 
-const contentScrollRef = ref<InstanceType<typeof Scrollbar> | null>(null)
+const contentScrollRef = ref<ScrollbarExpose | null>(null)
 /** 内容区滚动由 Scrollbar 承载（路由的 scrollBehavior 只作用于 window，管不到它），故路由变化后手动复位 */
 watch(
   () => route.fullPath,
