@@ -16,7 +16,7 @@ const cancel = (e: MouseEvent) => {
 const openChange = (open: boolean) => {
   console.log('open', open)
 }
-// 弹出位置：6 个方向（含复合方向），默认的箭头与翻转行为可一屏对比
+/** 弹出位置：6 个方向（含复合方向），默认的箭头与翻转行为可一屏对比 */
 type PopconfirmPlacement = NonNullable<PopconfirmProps['placement']>
 const placements: PopconfirmPlacement[] = ['topLeft', 'top', 'topRight', 'bottomLeft', 'bottom', 'bottomRight']
 const placement = ref<PopconfirmPlacement>('top')
@@ -59,7 +59,7 @@ const openControlOpen = ref(false)
       <template #title>
         <a href="https://themusecatcher.github.io/vue-amazing-ui/" target="_blank">Vue Amazing UI</a>
       </template>
-      <template #description> An Amazing Vue3 UI Components Library </template>
+      <template #description> An Amazing Vue 3 UI Component Library </template>
       <template #icon>
         <FireFilled style="color: #d4380d" />
       </template>

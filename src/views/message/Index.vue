@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { SoundFilled, FireFilled, ExclamationCircleFilled } from '@ant-design/icons-vue'
-import { Button, Select, Tooltip } from 'vue-amazing-ui'
+import { Button, Select, Tooltip, useMessage, createDiscreteApi } from 'vue-amazing-ui'
+import type { DiscreteApiInstance, MessageApi, MessageReactive, MessageUpdate, SelectOption } from 'vue-amazing-ui'
 // 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
 import 'vue-amazing-ui/es/button/style'
 import 'vue-amazing-ui/es/select/style'
 import 'vue-amazing-ui/es/tooltip/style'
-import { useMessage, createDiscreteApi } from 'vue-amazing-ui'
-import type { DiscreteApiInstance, MessageApi, MessageReactive, MessageUpdate, SelectOption } from 'vue-amazing-ui'
 // 以下组件在渲染函数（h）中作编程式引用，需要组件值：本项目未做全局注册，故显式按需引入
 const message = useMessage()
 // setup 外调用示例：createDiscreteApi 创建脱离组件树的独立实例
@@ -19,11 +18,11 @@ function onDiscreteMessage() {
   }
   discreteMessage.message.info('This message is opened by createDiscreteApi outside setup')
 }
-// 基本使用
+/** 基本使用 */
 function onOpen(content: string) {
   message.open(content) // open 调用
 }
-// 不同类型的全局提示
+/** 不同类型的全局提示 */
 function onInfo(content: string) {
   message.info(content) // info 调用
 }
@@ -39,7 +38,7 @@ function onWarning(content: string) {
 function onLoading(content: string) {
   message.loading(content) // loading 调用
 }
-// 自定义图标
+/** 自定义图标 */
 function onInfoIcon() {
   message.info({
     content: 'This is an info message with a custom icon',
@@ -52,14 +51,14 @@ function onOpenIcon() {
     icon: h(FireFilled, { style: 'color: gold' })
   })
 }
-// icon 也支持渲染函数形态，每次渲染时动态生成图标
+/** icon 也支持渲染函数形态，每次渲染时动态生成图标 */
 function onIconRenderFn() {
   message.success({
     content: 'icon 渲染函数：每次渲染时动态生成图标',
     icon: () => h(SoundFilled, { style: 'color: #52c41a' })
   })
 }
-// 自定义样式
+/** 自定义样式 */
 function onCustomClass(content: string) {
   message.info({
     content: 'This is a custom class message',
@@ -76,7 +75,7 @@ function onCustomStyle(content: string) {
     }
   })
 }
-// 自动关闭
+/** 自动关闭 */
 function onAutoClose() {
   message.info({
     content: 'This message will automatically turn off after 3 seconds.',
@@ -86,7 +85,7 @@ function onAutoClose() {
     }
   })
 }
-// 不自动关闭（duration: null），点击消息时通过句柄手动关闭（onClick 回调）
+/** 不自动关闭（duration: null），点击消息时通过句柄手动关闭（onClick 回调） */
 function onNeverAutoClose() {
   const handle = message.info({
     content: 'This message will not automatically turn off. Click it to close.',
@@ -94,7 +93,7 @@ function onNeverAutoClose() {
     onClick: () => handle.destroy()
   })
 }
-// 复杂内容：VNode 与渲染函数
+/** 复杂内容：VNode 与渲染函数 */
 function onVNodeContent() {
   message.info({
     content: h('span', { style: 'color: #1677ff; font-weight: 600' }, '这是一条 VNode 渲染的富文本内容')
@@ -342,7 +341,7 @@ function onToMessage() {
 }
 </style>
 <style lang="less">
-// 消息通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式
+/* 消息通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式 */
 .custom-message-class {
   color: #ff6900;
 }

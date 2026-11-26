@@ -11,12 +11,11 @@ import {
   SoundFilled
 } from '@ant-design/icons-vue'
 import { format } from 'date-fns'
-import { Button, Switch } from 'vue-amazing-ui'
+import { Button, Switch, createDiscreteApi, useMessage, useModal } from 'vue-amazing-ui'
+import type { DiscreteApiInstance, ModalApi, ModalReactive, ModalUpdate, SelectOption } from 'vue-amazing-ui'
 // 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
 import 'vue-amazing-ui/es/button/style'
 import 'vue-amazing-ui/es/switch/style'
-import { createDiscreteApi, useMessage, useModal } from 'vue-amazing-ui'
-import type { DiscreteApiInstance, ModalApi, ModalReactive, ModalUpdate, SelectOption } from 'vue-amazing-ui'
 // 以下组件在渲染函数（h）中作编程式引用，需要组件值：本项目未做全局注册，故显式按需引入
 // setup 内调用 useModal()：需外层存在 <ModalProvider>（本项目已在 App.vue 入口全局包裹）
 const modal = useModal()
@@ -34,8 +33,10 @@ function onDiscreteModal() {
     content: 'This modal is opened by createDiscreteApi outside setup'
   })
 }
-// 基本使用：六种内置形态
-// info / success / error / warning 为单按钮（知道了），confirm / erase 为双按钮（取消 + 确定）
+/**
+ * 基本使用：六种内置形态
+ * info / success / error / warning 为单按钮（知道了），confirm / erase 为双按钮（取消 + 确定）
+ */
 function onInfo() {
   modal.info({
     title: 'This is an info modal',
@@ -104,7 +105,7 @@ const renderSeconds = reactive<{ lazy: number | null; pre: number | null }>({ la
 function formatRenderSeconds(seconds: number | null): string {
   return seconds === null ? '未渲染' : `已渲染 ${seconds} 秒`
 }
-// 未渲染时置灰，已渲染时高亮，直观区分懒渲染与预渲染
+/** 未渲染时置灰，已渲染时高亮，直观区分懒渲染与预渲染 */
 function renderValueStyle(seconds: number | null): CSSProperties {
   return { fontSize: '20px', color: seconds === null ? 'var(--va-text-color-3)' : '#1677ff' }
 }
@@ -202,8 +203,10 @@ function onAfterCloseModal() {
     }
   })
 }
-// 内容区高度与滚动
-// 生成演示用的超长内容：每次调用返回新的 VNode，避免复用同一 VNode 实例导致渲染异常
+/**
+ * 内容区高度与滚动
+ * 生成演示用的超长内容：每次调用返回新的 VNode，避免复用同一 VNode 实例导致渲染异常
+ */
 function createLongContent(): VNode {
   return h(
     'div',
@@ -213,7 +216,7 @@ function createLongContent(): VNode {
     )
   )
 }
-// height 为 auto（默认）时内容由弹框自然撑开，超高后整个弹框随外层容器滚动
+/** height 为 auto（默认）时内容由弹框自然撑开，超高后整个弹框随外层容器滚动 */
 function onWholeScrollModal() {
   modal.info({
     title: '整体弹框滚动（height 默认 auto）',
@@ -222,7 +225,7 @@ function onWholeScrollModal() {
     width: 520
   })
 }
-// 指定 height 后内容区内部滚动，标题与按钮固定可见
+/** 指定 height 后内容区内部滚动，标题与按钮固定可见 */
 function onInnerScrollModal() {
   modal.info({
     title: '内容区内部滚动（height + scrollbarProps）',
@@ -233,7 +236,7 @@ function onInnerScrollModal() {
     width: 520
   })
 }
-// scrollbarProps 透传给内置 Scrollbar，可定制滚动条大小与位置
+/** scrollbarProps 透传给内置 Scrollbar，可定制滚动条大小与位置 */
 function onCustomScrollbarModal() {
   modal.info({
     title: '自定义滚动条',
@@ -244,7 +247,7 @@ function onCustomScrollbarModal() {
     width: 520
   })
 }
-// 自定义宽度
+/** 自定义宽度 */
 function onNumberWidthModal() {
   modal.info({
     title: '数值宽度',
@@ -259,7 +262,7 @@ function onPercentWidthModal() {
     width: '28%'
   })
 }
-// 自定义图标
+/** 自定义图标 */
 function onVNodeIconModal() {
   modal.info({
     title: '节点图标',
@@ -267,7 +270,7 @@ function onVNodeIconModal() {
     icon: h(CloudFilled)
   })
 }
-// icon 也支持渲染函数形态，每次渲染时动态生成图标
+/** icon 也支持渲染函数形态，每次渲染时动态生成图标 */
 function onRenderFnIconModal() {
   modal.confirm({
     title: '渲染函数图标',
@@ -277,7 +280,7 @@ function onRenderFnIconModal() {
 }
 // 声明式用法下 icon / closeIcon 同样支持渲染函数形态
 const renderFnIconOpen = ref(false)
-// 自定义样式：多层结构各由不同 Class / Style 控制
+/** 自定义样式：多层结构各由不同 Class / Style 控制 */
 function onCustomClass() {
   modal.info({
     title: '自定义卡片类名（bodyClass）',
@@ -309,8 +312,10 @@ function onTitleContentStyle() {
     contentStyle: { fontSize: '15px', lineHeight: 1.8, color: '#d4380d' }
   })
 }
-// 定位层与卡片层：containerClass / containerStyle 作用于定位层 .modal-container，用于覆盖 width / top / zIndex；
-// 卡片外观（背景 / 圆角 / 阴影 / 描边）请用作用于 .modal-body-wrap 的 bodyClass / bodyStyle
+/**
+ * 定位层与卡片层：containerClass / containerStyle 作用于定位层 .modal-container，用于覆盖 width / top / zIndex；
+ * 卡片外观（背景 / 圆角 / 阴影 / 描边）请用作用于 .modal-body-wrap 的 bodyClass / bodyStyle
+ */
 function onContainerClass() {
   modal.info({
     title: '自定义定位层类名（containerClass）',
@@ -326,7 +331,7 @@ function onContainerStyle() {
     containerStyle: { width: '480px', top: '180px' }
   })
 }
-// 自定义按钮
+/** 自定义按钮 */
 function onNoticeBtnModal() {
   modal.info({
     title: '自定义按钮文案',
@@ -351,7 +356,7 @@ function onConfirmBtnsModal() {
     onCancel: () => message.error('点击了 No')
   })
 }
-// showCancel 仅在 confirm / erase 双按钮形态生效
+/** showCancel 仅在 confirm / erase 双按钮形态生效 */
 function onHideCancelModal() {
   modal.confirm({
     title: '隐藏取消按钮',
@@ -361,8 +366,10 @@ function onHideCancelModal() {
     onOk: () => message.success('点击了「知道了」')
   })
 }
-// 自定义底部区域
-// footer 传渲染函数时完全接管底部，内置按钮组不再渲染
+/**
+ * 自定义底部区域
+ * footer 传渲染函数时完全接管底部，内置按钮组不再渲染
+ */
 function onFooterRenderModal() {
   const handle: ModalReactive = modal.info({
     title: '自定义底部渲染',
@@ -393,8 +400,10 @@ function onFooterlessModal() {
     footer: false
   })
 }
-// 完全自定义 create()
-// create() 不渲染内置图标与按钮组，图标、底部均由 icon / footer 自行组合
+/**
+ * 完全自定义 create()
+ * create() 不渲染内置图标与按钮组，图标、底部均由 icon / footer 自行组合
+ */
 function onCreateModal() {
   const handle: ModalReactive = modal.create({
     title: 'Custom Modal（create）',
@@ -419,8 +428,10 @@ function onCreateModal() {
       ])
   })
 }
-// 关闭按钮
-// 命令式弹窗默认无关闭按钮，closable: true 显示右上角 X
+/**
+ * 关闭按钮
+ * 命令式弹窗默认无关闭按钮，closable: true 显示右上角 X
+ */
 function onClosableModal() {
   modal.confirm({
     title: '显示关闭按钮',
@@ -429,7 +440,7 @@ function onClosableModal() {
     onOk: () => message.success('点击了「确定」')
   })
 }
-// closeIcon 支持 VNode 与渲染函数
+/** closeIcon 支持 VNode 与渲染函数 */
 function onCustomCloseIconModal() {
   modal.confirm({
     title: '自定义关闭图标',
@@ -439,7 +450,7 @@ function onCustomCloseIconModal() {
     onOk: () => message.success('点击了「确定」')
   })
 }
-// 关闭按钮不参与 Tab 序列
+/** 关闭按钮不参与 Tab 序列 */
 function onNoCloseFocusableModal() {
   modal.confirm({
     title: '关闭按钮不参与 Tab 序列',
@@ -450,7 +461,7 @@ function onNoCloseFocusableModal() {
     onOk: () => message.success('点击了「确定」')
   })
 }
-// 自定义位置
+/** 自定义位置 */
 function onNumberTopModal() {
   modal.info({
     title: '60px This is a number fixed modal',
@@ -474,7 +485,7 @@ function onCenteredModal() {
     centered: true
   })
 }
-// 动画出现位置
+/** 动画出现位置 */
 function onMouseOriginModal() {
   modal.info({
     title: '从鼠标位置展开（默认）',
@@ -489,8 +500,10 @@ function onCenterOriginModal() {
     transformOrigin: 'center'
   })
 }
-// 异步关闭与阻止关闭
-// onOk 返回 Promise：resolve 后自动关闭，期间按钮保持 loading
+/**
+ * 异步关闭与阻止关闭
+ * onOk 返回 Promise：resolve 后自动关闭，期间按钮保持 loading
+ */
 function onAsyncOkModal() {
   modal.confirm({
     title: '确认提交这些项？',
@@ -506,7 +519,7 @@ function onAsyncOkModal() {
     onCancel: () => message.error('已取消提交')
   })
 }
-// onOk 返回的 Promise reject 时阻止关闭（在 catch 中返回 false，避免异常冒泡到控制台）
+/** onOk 返回的 Promise reject 时阻止关闭（在 catch 中返回 false，避免异常冒泡到控制台） */
 function onRejectOkModal() {
   modal.confirm({
     title: '确认删除这些项？',
@@ -521,7 +534,7 @@ function onRejectOkModal() {
       })
   })
 }
-// onOk 同步返回 false 同样阻止关闭
+/** onOk 同步返回 false 同样阻止关闭 */
 function onPreventOkModal() {
   let submitted = false
   modal.confirm({
@@ -537,7 +550,7 @@ function onPreventOkModal() {
     }
   })
 }
-// onCancel 返回 false 时，遮罩 / Esc / 取消按钮都无法关闭
+/** onCancel 返回 false 时，遮罩 / Esc / 取消按钮都无法关闭 */
 function onPreventCancelModal() {
   modal.confirm({
     title: '取消时阻止关闭',
@@ -604,8 +617,10 @@ function onProgressUpload() {
   }, 120)
   timers.push(timer)
 }
-// 多实例层叠
-// 遮罩会挡住页面，弹窗打开后无法再点击页面按钮，故一次点击开启多层以便观察层叠与逐层关闭
+/**
+ * 多实例层叠
+ * 遮罩会挡住页面，弹窗打开后无法再点击页面按钮，故一次点击开启多层以便观察层叠与逐层关闭
+ */
 function openStackLayers(content: string): void {
   for (let layer = 1; layer <= 3; layer += 1) {
     modal.info({
@@ -619,7 +634,7 @@ function openStackLayers(content: string): void {
 function onStackModal() {
   openStackLayers('点击遮罩或「知道了」只关闭栈顶弹窗；各实例按自身 zIndex 分层（遮罩取 zIndex，弹窗取 zIndex + 10）。')
 }
-// destroyAll 同样无法在弹窗打开后从页面触发，故开启多层后用定时器演示一次性全部销毁
+/** destroyAll 同样无法在弹窗打开后从页面触发，故开启多层后用定时器演示一次性全部销毁 */
 function onDestroyAllModals() {
   openStackLayers('2s 后 destroyAll() 会一次性关闭并销毁全部弹窗。')
   timers.push(
@@ -629,7 +644,7 @@ function onDestroyAllModals() {
     }, 2000)
   )
 }
-// 遮罩、键盘与滚动锁定
+/** 遮罩、键盘与滚动锁定 */
 function onNoMaskModal() {
   modal.info({
     title: '无遮罩',
@@ -638,7 +653,7 @@ function onNoMaskModal() {
     maskClosable: false
   })
 }
-// 命令式调用默认 maskClosable: false，需显式开启
+/** 命令式调用默认 maskClosable: false，需显式开启 */
 function onMaskClosableModal() {
   modal.confirm({
     title: '点击遮罩关闭',
@@ -648,7 +663,7 @@ function onMaskClosableModal() {
     onCancel: () => message.error('点击了遮罩 / Esc / 取消')
   })
 }
-// keyboard: false 禁用 Esc 关闭，但 onEsc 回调仍会触发
+/** keyboard: false 禁用 Esc 关闭，但 onEsc 回调仍会触发 */
 function onNoKeyboardModal() {
   modal.info({
     title: '禁用 Esc 关闭',
@@ -657,7 +672,7 @@ function onNoKeyboardModal() {
     onEsc: () => message.info('onEsc 回调触发，但已禁用 Esc 关闭')
   })
 }
-// onMaskClick / onEsc 无论是否允许关闭都会触发
+/** onMaskClick / onEsc 无论是否允许关闭都会触发 */
 function onMaskEscCallbackModal() {
   modal.info({
     title: '遮罩与 Esc 回调',
@@ -681,7 +696,7 @@ function onNoBlockScrollModal() {
     blockScroll: false
   })
 }
-// 焦点管理
+/** 焦点管理 */
 function onAutoFocusOkModal() {
   modal.confirm({
     title: '聚焦确定按钮（默认）',
@@ -1172,16 +1187,16 @@ const layerZIndexOpen = ref(false)
 }
 </style>
 <style lang="less">
-// 弹窗通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式
-// bodyClass 演示：类名挂在卡片层 .modal-body-wrap 上，让默认白底卡片变为橙色渐变 + 描边，一眼可辨命中层
+/* 弹窗通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式 */
+/* bodyClass 演示：类名挂在卡片层 .modal-body-wrap 上，让默认白底卡片变为橙色渐变 + 描边，一眼可辨命中层 */
 .custom-modal-body {
   background: linear-gradient(135deg, #fff7e6 0%, #ffd591 100%) !important;
   border: 2px solid #ff6900 !important;
   border-radius: 16px !important;
   box-shadow: 0 6px 24px rgba(255, 105, 0, 0.18) !important;
 }
-// containerClass 演示：类名挂在定位层 .modal-container 上（透明、本身无视觉），
-// 类内用 !important 覆盖内置 top / width，即可直观看到「定位被类接管」
+/* containerClass 演示：类名挂在定位层 .modal-container 上（透明、本身无视觉）， */
+/* 类内用 !important 覆盖内置 top / width，即可直观看到「定位被类接管」 */
 .custom-modal-container {
   top: 200px !important;
   width: 480px !important;

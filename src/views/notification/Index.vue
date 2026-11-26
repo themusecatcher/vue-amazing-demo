@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { CloudFilled, FireFilled, SoundFilled, ExclamationCircleFilled } from '@ant-design/icons-vue'
-import { Button, Select, Tooltip } from 'vue-amazing-ui'
-// 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
-import 'vue-amazing-ui/es/button/style'
-import 'vue-amazing-ui/es/select/style'
-import 'vue-amazing-ui/es/tooltip/style'
-import { createDiscreteApi, useMessage, useNotification } from 'vue-amazing-ui'
+import { Button, Select, Tooltip, createDiscreteApi, useMessage, useNotification } from 'vue-amazing-ui'
 import type {
   DiscreteApiInstance,
   NotificationApi,
@@ -15,6 +10,10 @@ import type {
   NotificationUpdate,
   SelectOption
 } from 'vue-amazing-ui'
+// 显式值导入不经过 VueAmazingUIResolver，不会自动注入组件样式，需手动引入样式入口
+import 'vue-amazing-ui/es/button/style'
+import 'vue-amazing-ui/es/select/style'
+import 'vue-amazing-ui/es/tooltip/style'
 // 以下组件在渲染函数（h）中作编程式引用，需要组件值：本项目未做全局注册，故显式按需引入
 // setup 内调用 useNotification()：需外层存在 <NotificationProvider>（本项目已在 App.vue 入口全局包裹）
 const notification = useNotification()
@@ -32,14 +31,14 @@ function onDiscreteNotification() {
     content: 'This notification is opened by createDiscreteApi outside setup'
   })
 }
-// 基本使用
+/** 基本使用 */
 function onOpen(content: string) {
   notification.open({
     title: 'Notification Title',
     content
   }) // open 调用
 }
-// 不同类型的通知提醒
+/** 不同类型的通知提醒 */
 function onInfo(content: string) {
   notification.info({
     title: 'Notification Title',
@@ -64,7 +63,7 @@ function onError(content: string) {
     content
   }) // error 调用
 }
-// 自定义图标
+/** 自定义图标 */
 function onInfoIcon() {
   notification.info({
     title: 'Notification Title',
@@ -79,7 +78,7 @@ function onOpenIcon() {
     icon: h(FireFilled, { style: 'color: gold' })
   })
 }
-// icon 也支持渲染函数形态，每次渲染时动态生成图标
+/** icon 也支持渲染函数形态，每次渲染时动态生成图标 */
 function onIconRenderFn() {
   notification.success({
     title: 'Notification Title',
@@ -87,7 +86,7 @@ function onIconRenderFn() {
     icon: () => h(SoundFilled, { style: 'color: #52c41a' })
   })
 }
-// 自定义样式
+/** 自定义样式 */
 function onCustomClass() {
   notification.open({
     title: 'Notification Title',
@@ -107,7 +106,7 @@ function onStyleCustom() {
     }
   })
 }
-// 自定义关闭延时与回调
+/** 自定义关闭延时与回调 */
 function onAutoClose() {
   notification.info({
     title: 'Notification Title',
@@ -122,7 +121,7 @@ function onAutoClose() {
     }
   })
 }
-// 不自动关闭（duration: null），可点击通知右上角关闭按钮，或通过句柄手动关闭
+/** 不自动关闭（duration: null），可点击通知右上角关闭按钮，或通过句柄手动关闭 */
 function onNeverAutoClose() {
   notification.info({
     title: 'Notification Title',
@@ -130,7 +129,7 @@ function onNeverAutoClose() {
     duration: null
   })
 }
-// 复杂内容：title / content 均支持 VNode 与渲染函数
+/** 复杂内容：title / content 均支持 VNode 与渲染函数 */
 function onVNodeContent() {
   notification.info({
     title: h('span', { style: 'color: #1677ff; font-weight: 600' }, 'VNode 标题'),
@@ -170,7 +169,7 @@ function onLayerNotification() {
     duration: null
   })
 }
-// 自定义按钮：点击 Confirm 关闭当前通知
+/** 自定义按钮：点击 Confirm 关闭当前通知 */
 function onAction() {
   const handle = notification.open({
     title: 'Notification Title',
@@ -188,7 +187,7 @@ function onAction() {
       )
   })
 }
-// 点击通知体：onClick 回调；点击右上角关闭按钮不会触发（已阻止冒泡）
+/** 点击通知体：onClick 回调；点击右上角关闭按钮不会触发（已阻止冒泡） */
 function onClickNotification() {
   notification.info({
     title: '点击通知体',
@@ -199,7 +198,7 @@ function onClickNotification() {
     }
   })
 }
-// 自定义关闭行为：onClose 返回 false 阻止右上角 X 关闭，点击"已读"后才能关闭
+/** 自定义关闭行为：onClose 返回 false 阻止右上角 X 关闭，点击"已读"后才能关闭 */
 function onUnclosable() {
   let markAsRead = false
   const handle = notification.open({
@@ -231,7 +230,7 @@ I cant get no, I cant get no`,
       )
   })
 }
-// 隐藏关闭按钮：单条 closable 优先于组件级；组件级 closable 对该实例内的所有通知生效
+/** 隐藏关闭按钮：单条 closable 优先于组件级；组件级 closable 对该实例内的所有通知生效 */
 function onNoClosable() {
   notification.warning({
     title: '隐藏关闭按钮',
@@ -356,8 +355,10 @@ function onHoverNoPauseNotification() {
     duration: 2000
   })
 }
-// placement 类型复用组件导出的 Notification 配置类型，避免手写联合类型与组件定义脱节
-// NonNullable 用于去掉可选属性带来的 undefined（此处参数为必填）
+/**
+ * placement 类型复用组件导出的 Notification 配置类型，避免手写联合类型与组件定义脱节
+ * NonNullable 用于去掉可选属性带来的 undefined（此处参数为必填）
+ */
 function onOpenPlacement(placement: NonNullable<NotificationOptions['placement']>) {
   notification.info({
     title: 'Notification Title',
@@ -547,7 +548,7 @@ function onToNotification() {
 }
 </style>
 <style lang="less">
-// 通知通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式
+/* 通知通过 Teleport 挂载到 body 下，scoped 样式无法命中，需使用全局样式 */
 .custom-notification-class {
   color: #d4380d;
   .notification-title {
