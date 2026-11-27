@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
 
 // 主题种子与明暗模式取自 theme store，右下角 FloatButton 的面板修改后全站组件配色实时联动
 const themeStore = useThemeStore()
-const route = useRoute()
-// 与官方演示工程一致：整站包一层页面级水印（水印演示页自身展示水印，排除在外避免叠加）
-const routeName = computed(() => route.name)
 </script>
 
 <template>
@@ -19,10 +14,7 @@ const routeName = computed(() => route.name)
         <ModalProvider>
           <DialogProvider>
             <NotificationProvider>
-              <RouterView v-if="routeName === 'Watermark'" />
-              <Watermark v-else content="Vue Amazing UI">
-                <RouterView />
-              </Watermark>
+              <RouterView />
             </NotificationProvider>
           </DialogProvider>
         </ModalProvider>
